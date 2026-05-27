@@ -1,7 +1,7 @@
 ---
 title: 评测集 v2 扩到 200 条（招牌菜 1B）
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/IVoMwx0ayiQdIYkyBZ8cbwBYnBd"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么

@@ -1,7 +1,7 @@
 ---
 title: 附录 E：业务知识补充阅读
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/K3S4wWgOJi4XJKkQnGIci7kUn1f"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 附录定位

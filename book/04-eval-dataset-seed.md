@@ -1,7 +1,7 @@
 ---
 title: 评测集种子构造（招牌菜 1A）
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/FZlBwhKvvioyDOkj2RFcy1qTnYs"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么

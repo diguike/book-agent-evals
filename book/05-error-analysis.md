@@ -1,7 +1,7 @@
 ---
 title: 错误分析：Open-Axial Coding
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Kay5wEpDIimQE2kv8yIcTRvOnwb"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么

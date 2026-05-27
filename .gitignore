@@ -123,6 +123,7 @@ publish-wiki*.mjs
 *_state.json
 .wiki-state.json
 feishu-setup/
+.feishu-tmp/
 
 # === 通用开发产物 ===
 

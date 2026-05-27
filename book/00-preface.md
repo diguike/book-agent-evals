@@ -1,7 +1,7 @@
 ---
 title: 前言
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/ZBl3wkNNYiQHNvk8udLcOBgGnkf"
+last_synced: "2026-05-27T14:56:56Z"
 ---
 
 ## 一个真实的周一

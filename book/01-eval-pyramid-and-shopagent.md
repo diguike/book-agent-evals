@@ -1,7 +1,7 @@
 ---
 title: 评测金字塔与 ShopAgent 速览
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UocOwwmxqiffTBksfWvcgEGmnrd"
+last_synced: "2026-05-27T14:56:56Z"
 ---
 
 ## 本章你会拿到什么

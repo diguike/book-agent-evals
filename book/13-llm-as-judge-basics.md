@@ -1,7 +1,7 @@
 ---
 title: LLM-as-Judge 入门
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/AzuNweomEiDL1Ck49Pic2v1Wnyf"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么

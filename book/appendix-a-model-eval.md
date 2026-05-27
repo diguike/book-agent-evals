@@ -1,7 +1,7 @@
 ---
 title: 附录 A：模型评测进阶
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/CvhVw9qKRiXKhek7ZISc5YvTnHd"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 附录定位

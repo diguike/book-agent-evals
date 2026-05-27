@@ -1,7 +1,7 @@
 ---
 title: Red Team 与 Safety
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UpsVwtVvjiXNkYksgxech45Nn4e"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么

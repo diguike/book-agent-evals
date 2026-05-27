@@ -1,7 +1,7 @@
 ---
 title: Hello World 评测
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Ni2DwNPdBik0Jaks3pWczK6lnFh"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么

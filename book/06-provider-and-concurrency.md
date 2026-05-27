@@ -1,7 +1,7 @@
 ---
 title: Provider 抽象与并发
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/RNfkwv8xYi4xMLk27TScypBPnLg"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么

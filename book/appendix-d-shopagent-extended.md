@@ -1,7 +1,7 @@
 ---
 title: 附录 D：ShopAgent 扩展版
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/I5sMwrjjsi8ifZkRcs2cNcXonil"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 附录定位

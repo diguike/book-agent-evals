@@ -1,7 +1,7 @@
 ---
 title: Trajectory 与 DB state delta
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/QId1wjlBDiPOb8kTgCOcgPKxn9g"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么

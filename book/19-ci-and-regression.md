@@ -1,7 +1,7 @@
 ---
 title: CI 集成与回归守门
-feishu_url: ""
-last_synced: ""
+feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Tdj1wOZGuiETqRk1avdcO6zUnXe"
+last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么
