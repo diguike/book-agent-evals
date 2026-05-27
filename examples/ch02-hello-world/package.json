@@ -1,0 +1,21 @@
+{
+  "name": "ch02-hello-world-eval",
+  "version": "0.1.0",
+  "private": true,
+  "description": "第 2 章：EvalKit minimal 的第一个评测",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "eval": "tsx src/index.ts",
+    "clean": "rm -rf dist runs"
+  },
+  "dependencies": {
+    "openai": "^4.73.0",
+    "@inferloop/shopagent": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}

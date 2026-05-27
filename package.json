@@ -1,0 +1,26 @@
+{
+  "name": "book-agent-evals",
+  "version": "0.1.0",
+  "private": true,
+  "description": "《AI Agent 评测工程实战》配套代码仓库",
+  "type": "module",
+  "workspaces": [
+    "examples/*"
+  ],
+  "scripts": {
+    "doctor": "tsx scripts/doctor.ts",
+    "build": "npm run build --workspaces --if-present",
+    "build:evalkit": "npm run build -w @inferloop/evalkit",
+    "build:shopagent": "npm run build -w @inferloop/shopagent",
+    "test": "npm run test --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

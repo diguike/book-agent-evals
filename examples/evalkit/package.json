@@ -1,0 +1,83 @@
+{
+  "name": "@inferloop/evalkit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "EvalKit —— 书中教学用的评测脚手架（v1：Task/Dataset/Solver/Scorer 骨架）",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
+    },
+    "./dataset": {
+      "types": "./dist/dataset/index.d.ts",
+      "default": "./dist/dataset/index.js"
+    },
+    "./solver": {
+      "types": "./dist/solver/index.d.ts",
+      "default": "./dist/solver/index.js"
+    },
+    "./scorer": {
+      "types": "./dist/scorer/index.d.ts",
+      "default": "./dist/scorer/index.js"
+    },
+    "./scorer/rag": {
+      "types": "./dist/scorer/rag/index.d.ts",
+      "default": "./dist/scorer/rag/index.js"
+    },
+    "./scorer/judge": {
+      "types": "./dist/scorer/judge/index.d.ts",
+      "default": "./dist/scorer/judge/index.js"
+    },
+    "./scorer/tool_use": {
+      "types": "./dist/scorer/tool_use/index.d.ts",
+      "default": "./dist/scorer/tool_use/index.js"
+    },
+    "./rag": {
+      "types": "./dist/scorer/rag/index.d.ts",
+      "default": "./dist/scorer/rag/index.js"
+    },
+    "./eval": {
+      "types": "./dist/eval/index.d.ts",
+      "default": "./dist/eval/index.js"
+    },
+    "./log": {
+      "types": "./dist/log/index.d.ts",
+      "default": "./dist/log/index.js"
+    },
+    "./provider": {
+      "types": "./dist/provider/index.d.ts",
+      "default": "./dist/provider/index.js"
+    },
+    "./stats": {
+      "types": "./dist/stats/index.d.ts",
+      "default": "./dist/stats/index.js"
+    },
+    "./cli/ci": {
+      "types": "./dist/cli/ci.d.ts",
+      "default": "./dist/cli/ci.js"
+    }
+  },
+  "bin": {
+    "evalkit": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.0"
+  }
+}

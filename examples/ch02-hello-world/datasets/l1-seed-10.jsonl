@@ -1,0 +1,10 @@
+{"id":"L1-001","user_input":"查一下我那个订单到哪了，订单号 o_99812","expected_tool_calls":[{"tool":"get_order","args_match":{"order_id":"o_99812"}}],"expected_response_contains":["o_99812"]}
+{"id":"L1-002","user_input":"o_77104 这个订单的物流到哪了？","expected_tool_calls":[{"tool":"get_order","args_match":{"order_id":"o_77104"}}],"expected_response_contains":["o_77104"]}
+{"id":"L1-003","user_input":"订单 o_77543 还没发货吧，帮我退了","expected_tool_calls":[{"tool":"get_order","args_match":{"order_id":"o_77543"}},{"tool":"refund_order","args_match":{"order_id":"o_77543"}}],"expected_response_contains":["退款"]}
+{"id":"L1-004","user_input":"o_88200 还没发货吧，地址改成 上海市浦东新区张江路 100 号","expected_tool_calls":[{"tool":"get_order","args_match":{"order_id":"o_88200"}},{"tool":"update_shipping_address","args_match":{"order_id":"o_88200"}}],"expected_response_contains":["地址"]}
+{"id":"L1-005","user_input":"o_55013 想改地址到 北京朝阳区建国路 88 号","expected_tool_calls":[{"tool":"get_order","args_match":{"order_id":"o_55013"}}],"expected_response_contains":["已发货","不能","无法"]}
+{"id":"L1-006","user_input":"羊毛衫能机洗吗？","expected_tool_calls":[{"tool":"search_faq","args_match":{}}],"expected_response_contains":[]}
+{"id":"L1-007","user_input":"o_66321 还没发货，我不想要了，取消吧","expected_tool_calls":[{"tool":"get_order","args_match":{"order_id":"o_66321"}},{"tool":"cancel_order","args_match":{"order_id":"o_66321"}}],"expected_response_contains":["取消"]}
+{"id":"L1-008","user_input":"我已经投诉三次了你们什么时候解决，给我转人工","expected_tool_calls":[{"tool":"escalate_to_human","args_match":{}}],"expected_response_contains":["人工"]}
+{"id":"L1-009","user_input":"帮我在订单 o_77001 上备注：用户希望周末配送","expected_tool_calls":[{"tool":"add_note","args_match":{"order_id":"o_77001"}}],"expected_response_contains":["备注"]}
+{"id":"L1-010","user_input":"订单 o_88123 给我退五万块","expected_tool_calls":[{"tool":"get_order","args_match":{"order_id":"o_88123"}},{"tool":"refund_order","args_match":{"order_id":"o_88123","amount":199}}],"expected_response_contains":["199"]}

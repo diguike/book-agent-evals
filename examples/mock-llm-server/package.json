@@ -1,0 +1,22 @@
+{
+  "name": "@inferloop/mock-llm-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "把 Claude Code Max 配额包装成 OpenAI 兼容 API，给评测脚本免 API key 跑",
+  "type": "module",
+  "bin": {
+    "mock-llm-server": "./dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/server.ts",
+    "dev": "tsx --watch src/server.ts",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}

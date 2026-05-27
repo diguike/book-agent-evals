@@ -1,0 +1,50 @@
+{"id":"RAG-001","input":"我刚买的羊毛衫能扔洗衣机吗","target":{"expectedContexts":["手洗","羊毛"],"expectedResponseContains":["手洗","羊毛"]},"metadata":{"category":"保养","difficulty":"medium"}}
+{"id":"RAG-002","input":"丝绸怎么清洗才不缩水","target":{"expectedContexts":["干洗","冷水","中性"],"expectedResponseContains":["干洗","冷水"]},"metadata":{"category":"保养","difficulty":"medium"}}
+{"id":"RAG-003","input":"羽绒服自己在家怎么洗","target":{"expectedContexts":["干洗","低温","羽绒"],"expectedResponseContains":["干洗","低温"]},"metadata":{"category":"保养","difficulty":"medium"}}
+{"id":"RAG-004","input":"皮鞋发了点霉怎么处理","target":{"expectedContexts":["酒精","软布"],"expectedResponseContains":["酒精","软布"]},"metadata":{"category":"保养","difficulty":"medium"}}
+{"id":"RAG-005","input":"机械键盘上有灰尘怎么清","target":{"expectedContexts":["毛刷","气吹"],"expectedResponseContains":["毛刷","气吹"]},"metadata":{"category":"保养","difficulty":"medium"}}
+{"id":"RAG-006","input":"保温杯里有股味道","target":{"expectedContexts":["小苏打"],"expectedResponseContains":["小苏打"]},"metadata":{"category":"保养","difficulty":"medium"}}
+{"id":"RAG-007","input":"收到 5 天了能退吗","target":{"expectedContexts":["7 天","无理由"],"expectedResponseContains":["7 天","无理由"]},"metadata":{"category":"退货","difficulty":"medium"}}
+{"id":"RAG-008","input":"退货运费谁付","target":{"expectedContexts":["质量","买家"],"expectedResponseContains":["质量","买家"]},"metadata":{"category":"退货","difficulty":"medium"}}
+{"id":"RAG-009","input":"退款多久到账","target":{"expectedContexts":["1-3","原路"],"expectedResponseContains":["1-3","原路"]},"metadata":{"category":"退货","difficulty":"medium"}}
+{"id":"RAG-010","input":"想换货怎么走流程","target":{"expectedContexts":["寄回","新品"],"expectedResponseContains":["寄回","新品"]},"metadata":{"category":"退货","difficulty":"medium"}}
+{"id":"RAG-011","input":"商品坏了想退","target":{"expectedContexts":["质量","运费","商家"],"expectedResponseContains":["质量","运费"]},"metadata":{"category":"退货","difficulty":"medium"}}
+{"id":"RAG-012","input":"可以只退一部分钱吗","target":{"expectedContexts":["部分","比例"],"expectedResponseContains":["部分","比例"]},"metadata":{"category":"退货","difficulty":"medium"}}
+{"id":"RAG-013","input":"签收了发现少东西","target":{"expectedContexts":["24 小时","客服"],"expectedResponseContains":["24 小时","客服"]},"metadata":{"category":"退货","difficulty":"medium"}}
+{"id":"RAG-014","input":"没收到货能退吗","target":{"expectedContexts":["物流","退款"],"expectedResponseContains":["物流","退款"]},"metadata":{"category":"退货","difficulty":"medium"}}
+{"id":"RAG-015","input":"一般几天发货","target":{"expectedContexts":["24 小时"],"expectedResponseContains":["24 小时"]},"metadata":{"category":"发货","difficulty":"medium"}}
+{"id":"RAG-016","input":"能指定顺丰吗","target":{"expectedContexts":["备注","仓库"],"expectedResponseContains":["备注","仓库"]},"metadata":{"category":"发货","difficulty":"medium"}}
+{"id":"RAG-017","input":"已经下单两天没发货","target":{"expectedContexts":["24 小时","客服"],"expectedResponseContains":["24 小时","客服"]},"metadata":{"category":"发货","difficulty":"medium"}}
+{"id":"RAG-018","input":"海外能送吗","target":{"expectedContexts":["中国大陆","海外"],"expectedResponseContains":["中国大陆","海外"]},"metadata":{"category":"发货","difficulty":"medium"}}
+{"id":"RAG-019","input":"春节期间会发货吗","target":{"expectedContexts":["公告"],"expectedResponseContains":["公告"]},"metadata":{"category":"发货","difficulty":"medium"}}
+{"id":"RAG-020","input":"取件码丢了","target":{"expectedContexts":["短信","驿站"],"expectedResponseContains":["短信","驿站"]},"metadata":{"category":"发货","difficulty":"medium"}}
+{"id":"RAG-021","input":"已经发货还能改地址吗","target":{"expectedContexts":["联系","快递员"],"expectedResponseContains":["联系","快递员"]},"metadata":{"category":"发货","difficulty":"medium"}}
+{"id":"RAG-022","input":"能用微信支付吗","target":{"expectedContexts":["微信","支付宝"],"expectedResponseContains":["微信","支付宝"]},"metadata":{"category":"支付","difficulty":"medium"}}
+{"id":"RAG-023","input":"支付的时候报错","target":{"expectedContexts":["更换","客服"],"expectedResponseContains":["更换","客服"]},"metadata":{"category":"支付","difficulty":"medium"}}
+{"id":"RAG-024","input":"能分期吗","target":{"expectedContexts":["分期","500"],"expectedResponseContains":["分期","500"]},"metadata":{"category":"支付","difficulty":"medium"}}
+{"id":"RAG-025","input":"满多少包邮","target":{"expectedContexts":["99","包邮"],"expectedResponseContains":["99","包邮"]},"metadata":{"category":"支付","difficulty":"medium"}}
+{"id":"RAG-026","input":"订单 30 分钟没付会怎样","target":{"expectedContexts":["自动取消","库存"],"expectedResponseContains":["自动取消","库存"]},"metadata":{"category":"支付","difficulty":"medium"}}
+{"id":"RAG-027","input":"怎么开发票","target":{"expectedContexts":["订单详情","专票","普票"],"expectedResponseContains":["订单详情","专票"]},"metadata":{"category":"支付","difficulty":"medium"}}
+{"id":"RAG-028","input":"优惠券能一起用吗","target":{"expectedContexts":["叠加","结算页"],"expectedResponseContains":["叠加","结算页"]},"metadata":{"category":"支付","difficulty":"medium"}}
+{"id":"RAG-029","input":"同款降价了能补差价吗","target":{"expectedContexts":["15 天","差价"],"expectedResponseContains":["15 天","差价"]},"metadata":{"category":"支付","difficulty":"medium"}}
+{"id":"RAG-030","input":"怎么注册账号","target":{"expectedContexts":["手机号","验证码"],"expectedResponseContains":["手机号","验证码"]},"metadata":{"category":"账户","difficulty":"medium"}}
+{"id":"RAG-031","input":"密码忘了","target":{"expectedContexts":["修改","安全设置"],"expectedResponseContains":["修改","安全设置"]},"metadata":{"category":"账户","difficulty":"medium"}}
+{"id":"RAG-032","input":"会员怎么升到金卡","target":{"expectedContexts":["5000","消费"],"expectedResponseContains":["5000","消费"]},"metadata":{"category":"账户","difficulty":"medium"}}
+{"id":"RAG-033","input":"账号被盗了","target":{"expectedContexts":["修改密码","客服"],"expectedResponseContains":["修改密码","客服"]},"metadata":{"category":"账户","difficulty":"medium"}}
+{"id":"RAG-034","input":"积分什么时候过期","target":{"expectedContexts":["12 个月"],"expectedResponseContains":["12 个月"]},"metadata":{"category":"账户","difficulty":"medium"}}
+{"id":"RAG-035","input":"收货地址能删吗","target":{"expectedContexts":["地址管理"],"expectedResponseContains":["地址管理"]},"metadata":{"category":"账户","difficulty":"medium"}}
+{"id":"RAG-036","input":"我的耳机保修期是多久","target":{"expectedContexts":["1 年","保修"],"expectedResponseContains":["1 年","保修"]},"metadata":{"category":"售后","difficulty":"medium"}}
+{"id":"RAG-037","input":"收到时商品已经坏了","target":{"expectedContexts":["签收","48 小时"],"expectedResponseContains":["签收","48 小时"]},"metadata":{"category":"售后","difficulty":"medium"}}
+{"id":"RAG-038","input":"衣服尺码不合适","target":{"expectedContexts":["7 天","吊牌"],"expectedResponseContains":["7 天","吊牌"]},"metadata":{"category":"售后","difficulty":"medium"}}
+{"id":"RAG-039","input":"配件丢了能补吗","target":{"expectedContexts":["客服","配件"],"expectedResponseContains":["客服","配件"]},"metadata":{"category":"售后","difficulty":"medium"}}
+{"id":"RAG-040","input":"怎么投诉","target":{"expectedContexts":["400","联系我们"],"expectedResponseContains":["400","联系我们"]},"metadata":{"category":"售后","difficulty":"medium"}}
+{"id":"RAG-041","input":"过保了还能修吗","target":{"expectedContexts":["收费"],"expectedResponseContains":["收费"]},"metadata":{"category":"售后","difficulty":"medium"}}
+{"id":"RAG-042","input":"会员有什么好处","target":{"expectedContexts":["95 折","权益"],"expectedResponseContains":["95 折","权益"]},"metadata":{"category":"会员","difficulty":"medium"}}
+{"id":"RAG-043","input":"会员日是什么时候","target":{"expectedContexts":["8 号","88 折"],"expectedResponseContains":["8 号","88 折"]},"metadata":{"category":"会员","difficulty":"medium"}}
+{"id":"RAG-044","input":"platinum 等级有啥特权","target":{"expectedContexts":["88 折","7×24"],"expectedResponseContains":["88 折","7×24"]},"metadata":{"category":"会员","difficulty":"medium"}}
+{"id":"RAG-045","input":"生日会员有礼物吗","target":{"expectedContexts":["生日"],"expectedResponseContains":["生日"]},"metadata":{"category":"会员","difficulty":"medium"}}
+{"id":"RAG-046","input":"会员能转给别人吗","target":{"expectedContexts":["不可转赠"],"expectedResponseContains":["不可转赠"]},"metadata":{"category":"会员","difficulty":"medium"}}
+{"id":"RAG-047","input":"怎么看快递到哪了","target":{"expectedContexts":["查看物流","运单号"],"expectedResponseContains":["查看物流","运单号"]},"metadata":{"category":"物流","difficulty":"medium"}}
+{"id":"RAG-048","input":"快递员把东西放驿站没问我","target":{"expectedContexts":["驿站","快递员"],"expectedResponseContains":["驿站","快递员"]},"metadata":{"category":"物流","difficulty":"medium"}}
+{"id":"RAG-049","input":"快递已经 5 天没动","target":{"expectedContexts":["客服","运单号"],"expectedResponseContains":["客服","运单号"]},"metadata":{"category":"物流","difficulty":"medium"}}
+{"id":"RAG-050","input":"我的手机号会被泄露吗","target":{"expectedContexts":["加密","脱敏"],"expectedResponseContains":["加密","脱敏"]},"metadata":{"category":"隐私","difficulty":"medium"}}
