@@ -404,3 +404,8 @@ inspect_ai 的 `model_graded_qa` 和 `model_graded_fact` 是同思路的 judge s
 - 明确 binary > 1-5 量表
 
 下一章把 judge 推进到 step 5-6：用 judgy 的 Rogan-Gladen 公式做统计校正，把 "judge 观察 67%" 变成"校正后估算的真实 pass rate + 置信区间"。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

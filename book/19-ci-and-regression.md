@@ -494,3 +494,8 @@ Braintrust 是商业平台，把 CI 守门做得最完整。EvalKit 自己搭起
 - 真实演示：CI 把不该 merge 的 PR 挡住
 
 最后一章 Dashboard 把所有评测数据可视化，并讨论从 EvalKit 迁移到 langfuse / 自研评测平台的桥梁。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

@@ -296,3 +296,8 @@ Layer 1 模型评测是 Layer 2 的基础设施。**应用层工程师不需要�
 跑模型评测不复杂——OpenCompass / lm-eval 都是配置即代码。难的是**怎么解读**：什么时候相信榜单数字、什么时候必须自己跑 Layer 2、合规拒答怎么处理、微调评测怎么防 contamination。
 
 这个附录的目的不是给读者一份完整教程（那是另一本书），是给一张"什么时候去看 Layer 1 / 用什么工具 / 怎么读数字"的导航图。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

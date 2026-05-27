@@ -198,3 +198,8 @@ Layer 3 产品评测不是工程师的核心工作，但工程师**必须能用�
 3. **每月 review 对齐**
 
 工程师不需要会算 LTV / NPS 的精确公式（那是 PM 的事），但要能在月会上说"L2 pass^k 涨 10 个点，预期带来 CSAT +0.15，希望两周后看到实际数据"。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

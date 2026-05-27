@@ -344,3 +344,8 @@ if (estimateTokens(state.messages) > MAX_CONTEXT_RATIO * MODEL_CONTEXT_LIMITS[mo
 - 真实跑分：4 个 persona 表现差异显著，多轮特有问题暴露
 
 下一章进入 Agent 评测的另一个核心维度——Trajectory 和 DB state delta，**真正实现 τ-bench 风格的"评测世界变化而不是 agent 输出"**。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

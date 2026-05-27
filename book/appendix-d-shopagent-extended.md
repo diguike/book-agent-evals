@@ -211,3 +211,8 @@ Main ShopAgent on L1-ext v1.0.0 (100):
 主线读者跳过即可。进阶读者跟着扩展版做完之后，能再把方法论扩到自家真实的 30+ 工具 agent。
 
 EvalKit 框架本身**完全兼容扩展版**——主线和扩展走完全同一套 EvalKit 调度，只是评测集和 ShopAgent 实现不同。这是 EvalKit 设计上的功劳。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

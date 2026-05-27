@@ -378,3 +378,8 @@ git clone https://github.com/UKGovernmentBEIS/inspect_ai _references/inspect_ai
 到这里你已经走完一次评测的最小闭环：加载 → 跑 → 打分 → 写日志。拿到了两个真实数字（GPT-4o 80%、mini 60%），更重要的是看到了**评测的真正价值不是给你一个汇总数字，而是给你一份"哪里挂、为什么挂"的清单**。
 
 下一章把 100 行 minimal 长成有 Task / Dataset / Solver / Scorer 抽象的 EvalKit v1 骨架（约 600 行 TS），换一个 dataset、换一个 scorer 就不再需要改主循环代码，开始拥有"工程化评测框架"的样子。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

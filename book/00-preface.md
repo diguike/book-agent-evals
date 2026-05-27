@@ -100,3 +100,8 @@ last_synced: ""
 最后，如果你和那个周一的我一样，胃里发紧，盯着监控大屏不知道下一步该怎么走——希望这本书能让你慢慢松一口气。下一次发布前你会有 200 条评测集、CI 守门、pass^k 看可靠性、judge 看 policy 遵守、对抗集看安全。还是会有事故，但你不再是赌博。
 
 —— diguike，2026 年于上海
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

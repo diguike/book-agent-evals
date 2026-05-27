@@ -379,3 +379,8 @@ Shreya 和 Hamel 给的是方法论方向，工程实现各家不一样。EvalKi
 完整的"评测集从哪里来"问题彻底解决。读者照着做 ShopAgent 这套能复用到任何 agent 项目。
 
 下一章把这套体系自动化——CI 集成 + 回归守门。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

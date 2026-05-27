@@ -396,3 +396,8 @@ L2 评测集格式：
 - L2 评测集前 30 条 + 真实多轮 pass^1（73%）
 
 下一章把模拟器接到 EvalKit 的 multi-turn 主循环，完成完整的多轮评测调度。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

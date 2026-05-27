@@ -421,3 +421,8 @@ EvalKit 把这套合到一个工程化 pipeline 里，是中文教学场景下�
 - 完整的 evaluation-driven improvement cycle 走通
 
 下一章是第二招牌菜——数据飞轮：让评测集随时间自动扩充，把"评测集从哪里来"的痛点彻底解决。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

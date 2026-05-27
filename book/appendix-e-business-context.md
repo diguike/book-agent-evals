@@ -267,3 +267,8 @@ ShopAgent 主线刻意简化是教学考虑。**真实生产 agent 远比 ShopAg
 至此全书 20 章正文 + 5 附录全部完成。希望你和那个胃里发紧的周一早晨我，都不再赌博。
 
 —— diguike，2026 年于上海
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

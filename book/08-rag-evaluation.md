@@ -371,3 +371,8 @@ inspect_ai 自己不做 RAG 专项——它定位是通用 eval 框架，社区�
 - 一份针对 retrieval 提升的工程改进 menu
 
 下一章开始**用户模拟器**——给 ShopAgent 一个能装"急躁/啰嗦/隐瞒信息"的 LLM 用户，为多轮评测铺路。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

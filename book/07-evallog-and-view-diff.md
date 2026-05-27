@@ -456,3 +456,8 @@ examples/evalkit/src/
 - EvalKit 总代码量 ~1900 行，距离目标 2500 行还差 600 行
 
 下一章开始进入 Agent 评测的核心维度——RAG 子模块评测（第 8 章），然后是用户模拟器（第 9 章）、Multi-turn（第 10 章）。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

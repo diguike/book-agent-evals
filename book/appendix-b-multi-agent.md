@@ -197,3 +197,8 @@ EvalKit 不内置 multi-agent eval——主线场景是单 agent。但 EvalKit �
 **重要心智**：multi-agent 不是越复杂越好。ShopAgent 主线用单 agent 是有意的——大多数应用层场景单 agent + 良好 prompt 就够。multi-agent 是当业务复杂度真正撑不住单 agent 时再上的。
 
 读者真要做 multi-agent 评测：在 ShopAgent 规模下，单 agent 够用；真正上 multi-agent 前先把本附录三个 scorer（routing_accuracy / handoff_completeness / overall_task_completion）跑通，看数据再决定。**单 agent 80% vs multi-agent 90% 这种数字差距，如果不配套的评测维度跑过，是看不出来的**——先建评测，再决定架构。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

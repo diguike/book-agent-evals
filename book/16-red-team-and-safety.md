@@ -376,3 +376,8 @@ DeepEval 的红队套件比 EvalKit 完整很多，因为他们的定位就是 L
 - ShopAgent 主线版 L3 综合 pass^1 = 45%，pass^4 ≈ 16%（sonnet via mock-server），**生产部署前必须加 prompt injection 加固 + policy bypass 防御**
 
 下一章把 L1 60 条 + L2 100 条 + L3 40 条扩到 200 条统一评测集（**招牌菜 1B**），并讲合成数据 pipeline 的进阶（cross-model diversification、自动 review、版本管理）。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

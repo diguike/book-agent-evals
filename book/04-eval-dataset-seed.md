@@ -482,3 +482,8 @@ EvalKit 把这一套合成 pipeline 内置到 `src/synth/`，包名 `@inferloop/
 4. **一份能 fork 改造的方法论**：把 ShopAgent 换成你自家 agent，把工具集换成你的工具集，整个 pipeline 直接复用
 
 下一章你会用第 5 章的"错误分析方法论"（Open Coding + Axial Coding）真正看懂这 27 条挂的样本——把"55% pass^1"变成可执行的改进清单。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

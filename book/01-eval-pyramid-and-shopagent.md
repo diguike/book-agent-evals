@@ -292,3 +292,8 @@ Agent：好的，订单 o_99812 我已经备注"用户选择拒收，等待物�
 到那一章结束，你就走完了"评测"这个动作的最小闭环。再之后是把这个闭环长大到完整生产系统。
 
 不需要先把这一章背熟。三层金字塔的边界感会在后续章节反复用到，每次用到我会再点一次。先记住一句话：**主线 20 章全部在 Layer 2**。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

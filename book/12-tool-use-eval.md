@@ -336,3 +336,8 @@ BFCL 的 evaluation runner 用 AST 比对——把 agent 返回的工具调用 s
 6. 并行 / latency 表现
 
 下一章进入 LLM-as-Judge 入门——评测里最有争议但又最不可缺的一种 scorer。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

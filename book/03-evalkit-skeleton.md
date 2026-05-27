@@ -509,3 +509,8 @@ const mastraSolver: Solver = async (state, _generate) => {
 - CLI 三个子命令（run / view / diff，后两个 stub）
 
 下一章开始你会用这个框架做第一件"真正生产级"的事：**从 0 造 60 条 L1 评测集**——这是招牌菜 1A，是回到所有工程师真正痛点（评测集到底从哪里来）的开始。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

@@ -444,3 +444,8 @@ Rogan-Gladen 公式在流行病学/医学统计是常识。judgy 把它工程化
 5. **Position bias 防护**：每对跑两次 + 一致性判决
 
 下一章 pass^k 一致性会把这套统计基础设施用得更深入——多 trial 评测 + 一致性指标。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

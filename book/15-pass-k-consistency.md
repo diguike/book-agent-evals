@@ -338,3 +338,8 @@ EvalKit 的多 trial 比 inspect_ai 的 epochs 配置粒度更细——我们每
 - 报告格式：点估计 + SE + CI + 校正值
 
 下一章是 agent 评测里最有戏剧性的一章：Red Team + Safety + 40 条 L3 对抗集，让你看到 agent 在恶意诱导下的脆弱性。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

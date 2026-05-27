@@ -481,3 +481,8 @@ all 3 scorers pass:  20/30 (66.7%)
 3. **dbStateDelta**：最终世界状态对不对
 
 本章实测：3 scorer 综合 ShopAgent 在 L1 stride 30 条上 pass^1 = 66.7%（Claude Sonnet 4.5 via mock-server）。加上 session_completion / role_adherence 等多轮专用 scorer，ShopAgent 真实表现还会跌到约 45%。这是 prompt 改动前的基线，第 13-14 章 LLM-as-Judge 进入后再有 10-15 个点提升空间。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

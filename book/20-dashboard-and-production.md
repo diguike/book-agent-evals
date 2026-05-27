@@ -509,3 +509,8 @@ ShopAgent 在这套体系下从最初基线（sonnet via mock-server 综合 L1+L
 | E 业务知识 | 你的业务是国内电商，要设计 L3 对抗集时 | L3 灵感来源不足、policy 设计照搬美国语境 |
 
 主线读者建议先做完一轮自家 agent 评测（用本书前 20 章方法论），再回头按需翻附录。**附录不是"扩展阅读"，是"你卡在哪个 gap 就读哪一篇"**。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

@@ -460,3 +460,8 @@ inspect_ai 内置了 30+ provider（Together、Groq、Bedrock、Vertex…），�
 实测 60 条评测从 90 秒 → 19 秒，重跑 1.2 秒。
 
 下一章把评测日志的真实结构定下来（`src/log/`），并把 view / diff 命令做完整——目前还是 80 行的 stub 版本。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)

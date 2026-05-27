@@ -345,3 +345,8 @@ inspect_ai 自带的 view 是完整 Web UI（前端独立仓库未公开，主�
 5. 学会了 `view` / `diff` 两个日常工具
 
 下一章开始进入 EvalKit 的工程化升级——Provider 抽象 + 并发 + 缓存，让 60 条评测从 90 秒跑完压到 18 秒。
+
+---
+
+> 本章来自《AI Agent 评测工程实战》开源版 · 作者「递归客」  
+> 在线阅读完整书系：[inferloop.dev](https://inferloop.dev) · 反馈与勘误：[GitHub Issues](https://github.com/diguike/book-agent-evals/issues)
