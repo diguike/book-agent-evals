@@ -64,16 +64,10 @@ OPENAI_BASE_URL=http://localhost:3030/v1 OPENAI_API_KEY=mock npm run eval
 
 ## 关于作者
 
-[diguike](https://github.com/diguike) — 前端出身的全栈工程师，正在转型 AI Agent 工程师。已出版书籍：
+[diguike](https://github.com/diguike) — 前端出身的全栈工程师，正在转型 AI Agent 工程师。AI Agent 工程系列作者，相关书籍：
 
 - 《Hermes Agent 源码解读》
-- 《OpenClaw 源码解析》（进行中）
-- 《Agent Memory 工程实战》（进行中）
-- 《AI Token 中转站实战》（待发布）
-- 《百万级 AI Agent 平台架构》（进行中）
-
-本书与上面几本书形成代码生态：ShopAgent 与 enterprise-agent-book 同 domain 可互通；评测对象可挂载 book-claude-mem 的 memory 模块。
-
-## 状态
-
-调研完成 (`stage: research`)。目录骨架已三轮迭代收敛（立项 → 调研 → 读者评估），详细章节进 `book-writer toc` 阶段后定稿。
+- 《OpenClaw 源码解析》
+- 《Agent Memory 工程实战》
+- 《AI Token 中转站实战》
+- 《百万级 AI Agent 平台架构》
