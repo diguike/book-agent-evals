@@ -1,5 +1,5 @@
 ---
-title: 附录 E：业务知识补充阅读
+title: 附录 E　业务知识补充阅读
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/K3S4wWgOJi4XJKkQnGIci7kUn1f"
 last_synced: "2026-05-27T14:59:41Z"
 ---
@@ -218,7 +218,7 @@ L3 对抗集 40 条样本对应 4 类真实黑产手法。下面内容**基于�
 - [光明网 恶意退货 2026-05](https://m.gmw.cn/2026-05/09/content_1304449858.htm)
 - [肇庆爬虫批量投诉案](https://www.allbrightlaw.com/CN/10531/f9c1b18221a67f.aspx)
 
-## 6. 国内 AI 客服产业现状速览
+## 6. 国内 AI 客服产业现状（2026-05）
 
 主流 AI 客服产品（2026-05）：
 

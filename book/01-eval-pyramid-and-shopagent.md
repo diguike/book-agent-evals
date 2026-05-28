@@ -1,5 +1,5 @@
 ---
-title: 评测金字塔与 ShopAgent 速览
+title: 第 1 章　评测金字塔与 ShopAgent 接口
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UocOwwmxqiffTBksfWvcgEGmnrd"
 last_synced: "2026-05-27T14:56:56Z"
 ---
@@ -9,7 +9,7 @@ last_synced: "2026-05-27T14:56:56Z"
 读完这一章，你会有两样东西：
 
 1. **一张评测金字塔的心智地图**——清楚知道什么时候该用"模型评测"，什么时候该用"Agent 评测"，什么时候该用"产品评测"。这是后续 20 章的边界感来源。三者不是替代关系，是搭配关系。
-2. **ShopAgent 的接口速览**——它有哪些工具、什么 policy、给读者的合约是什么。本书的 ShopAgent 仓库里**已经写好**了，我们只看它的 API 和约束，不看它怎么实现。
+2. **ShopAgent 的工具与约束**——它有哪些工具、什么 policy、给读者的合约是什么。本书的 ShopAgent 仓库里**已经写好**了，我们只看它的 API 和约束，不看它怎么实现。
 
 这一章没有代码。下一章你会跑出第一个真实评测数字。
 

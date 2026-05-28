@@ -1,12 +1,12 @@
 ---
-title: 评测集种子构造（招牌菜 1A）
+title: 第 4 章　构建评测集种子（60 条 L1）
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/FZlBwhKvvioyDOkj2RFcy1qTnYs"
 last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么
 
-这一章是全书的招牌菜之一。读完你会：
+这一章解决 Agent 工程师最常被问到的问题：评测集从哪里来？读完你会：
 
 1. **从 0 造出 60 条 L1 评测集**（覆盖 ShopAgent 8 个工具的 5 个高频路径，含正常 case + edge case）
 2. **拿到一套完整的合成 pipeline**：种子样本设计 → LLM 合成生成 → embedding 去重 → 人工筛选 → 最终 jsonl
@@ -371,7 +371,7 @@ const AUTO_REVIEW_PROMPT = `判断下面这条评测样本的质量。打分 0-3
 
 ## Phase 5：用最终评测集复跑
 
-把 60 条评测集喂回 EvalKit v1：
+把 60 条评测集喂回 EvalKit：
 
 ```bash
 cd examples/ch04-dataset-seed
@@ -466,7 +466,7 @@ EvalKit 把这一套合成 pipeline 内置到 `src/synth/`，包名 `@inferloop/
 
 ## 本章要点回顾
 
-- **招牌菜 1A**：从 0 造 60 条 L1 评测集的完整 pipeline，读完能立刻给自家 agent 复用
+- **第 4 章核心成果**：从 0 造 60 条 L1 评测集的完整 pipeline，读完能立刻给自家 agent 复用
 - **三维度框架**：Features × Scenarios × Personas，决定造哪些类型的样本
 - **LLM 合成的两个陷阱**：(1) 用 Claude 合成评测 Claude 会过拟合（用别的 generator） (2) 全 LLM 合成 = 没有边界 case，必须配人工筛
 - **stride 抽样 ≠ 取前 N 条**：前 60 条全是 query_order 简单类（100% pass），stride 60 条混合类才暴露真实弱点（55%）
@@ -476,7 +476,7 @@ EvalKit 把这一套合成 pipeline 内置到 `src/synth/`，包名 `@inferloop/
 
 到这一步你拿到了：
 
-1. **60 条 L1 评测集**（`examples/eval-datasets/l1/l1-final-60.jsonl`），可立刻在 EvalKit v1 上跑
+1. **60 条 L1 评测集**（`examples/eval-datasets/l1/l1-final-60.jsonl`），可立刻在 EvalKit 上跑
 2. **完整合成 pipeline**：种子 → 合成 → 去重 → 自动 review → 人工 review → lint，500 行 TS 代码
 3. **真实的 pass^1 分布**：Claude Sonnet 4.5 via mock-server 55%，按工具/类别拆分清楚知道哪里弱（双工具流程 + policy 2 是两大瓶颈）
 4. **一份能 fork 改造的方法论**：把 ShopAgent 换成你自家 agent，把工具集换成你的工具集，整个 pipeline 直接复用

@@ -1,5 +1,5 @@
 ---
-title: 附录 C：与业务指标对齐
+title: 附录 C　与业务指标对齐
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/P32lwF09IiD7R2kMxuDcf6zYnNd"
 last_synced: "2026-05-27T14:59:41Z"
 ---

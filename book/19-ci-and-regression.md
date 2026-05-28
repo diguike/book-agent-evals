@@ -1,5 +1,5 @@
 ---
-title: CI 集成与回归守门
+title: 第 19 章　CI 集成与回归守门
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Tdj1wOZGuiETqRk1avdcO6zUnXe"
 last_synced: "2026-05-27T14:59:41Z"
 ---
@@ -271,7 +271,7 @@ PR comment 渲染：
 
 跟单个工程师工资比可以忽略——但跟"没有评测，让 PR 上线后再修"的代价（事故 + 工时 + 信任损失）相比是 100 倍便宜。
 
-> **强烈建议**：先用最小路径起步（$0.30/PR，**比一杯咖啡还便宜**），跑 1-2 周看 baseline 稳定后再决定是否加慢路径。本书 ch04 的招牌菜 1A 60 条评测集 + GPT-4o-mini 单次 = $0.06/PR，完全可以零成本心理负担接进 CI。
+> **建议**：先用最小路径起步（$0.30/PR），跑 1-2 周看 baseline 稳定后再决定是否加慢路径。本书第 4 章的 60 条 L1 评测集 + GPT-4o-mini 单次 = $0.06/PR，成本完全可以忽略。
 
 控制策略（下面三条让 cost 进一步降）：
 
@@ -493,7 +493,7 @@ Braintrust 是商业平台，把 CI 守门做得最完整。EvalKit 自己搭起
 - 守门策略矩阵 + Slack/飞书通知
 - 真实演示：CI 把不该 merge 的 PR 挡住
 
-最后一章 Dashboard 把所有评测数据可视化，并讨论从 EvalKit 迁移到 langfuse / 自研评测平台的桥梁。
+最后一章 Dashboard 把所有评测数据可视化，并给出从 EvalKit 迁移到 langfuse / 自研评测平台的具体路径。
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: 用户模拟器构造
+title: 第 9 章　用户行为模拟器
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/P6HTwld1SidMIWkHOocc1sZJnIh"
 last_synced: "2026-05-27T14:59:41Z"
 ---

@@ -1,5 +1,5 @@
 ---
-title: Judge 校准与统计推断
+title: 第 14 章　Judge 校准与显著性检验
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/ENFkwfyDPiSxwekzogUcguyKnWg"
 last_synced: "2026-05-27T14:59:41Z"
 ---
@@ -10,7 +10,7 @@ last_synced: "2026-05-27T14:59:41Z"
 
 1. **理解 Rogan-Gladen 统计校正**：把 "judge 观察 67%" 变成 "校正后估计真实 pass rate 是 71% [置信区间 65%-76%]"
 2. **拿到 judgy-ts**：[ai-evals-course/judgy](https://github.com/ai-evals-course/judgy) 的 TypeScript 移植版（约 120 行）
-3. **学会 bootstrap 置信区间**：评测平台 v1 必备的统计基础设施
+3. **学会 bootstrap 置信区间**：生产级评测平台必备的统计基础设施
 4. **了解 Elo / Bradley-Terry**：pairwise judge 进阶，什么时候该用什么时候不该用
 
 代码增量：`examples/evalkit/src/stats/`（新建模块）。

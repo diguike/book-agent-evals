@@ -1,5 +1,5 @@
 ---
-title: Red Team 与 Safety
+title: 第 16 章　Red Team 与安全评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UpsVwtVvjiXNkYksgxech45Nn4e"
 last_synced: "2026-05-27T14:59:41Z"
 ---
@@ -375,7 +375,7 @@ DeepEval 的红队套件比 EvalKit 完整很多，因为他们的定位就是 L
 - forbidden_tools / role_adherence / policy_4 三个 scorer 综合评测
 - ShopAgent 主线版 L3 综合 pass^1 = 45%，pass^4 ≈ 16%（sonnet via mock-server），**生产部署前必须加 prompt injection 加固 + policy bypass 防御**
 
-下一章把 L1 60 条 + L2 100 条 + L3 40 条扩到 200 条统一评测集（**招牌菜 1B**），并讲合成数据 pipeline 的进阶（cross-model diversification、自动 review、版本管理）。
+下一章把 L1 60 条 + L2 100 条 + L3 40 条扩到 200 条统一评测集，并讲合成数据 pipeline 的进阶（cross-model diversification、自动 review、版本管理）。
 
 ---
 

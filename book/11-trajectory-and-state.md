@@ -1,5 +1,5 @@
 ---
-title: Trajectory 与 DB state delta
+title: 第 11 章　调用轨迹与数据库状态校验
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/QId1wjlBDiPOb8kTgCOcgPKxn9g"
 last_synced: "2026-05-27T14:59:41Z"
 ---

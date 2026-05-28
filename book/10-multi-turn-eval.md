@@ -1,5 +1,5 @@
 ---
-title: Multi-turn 多轮评测
+title: 第 10 章　多轮对话评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/PdCYwOJGxiZxWVkYSmhcgnWCndf"
 last_synced: "2026-05-27T14:59:41Z"
 ---

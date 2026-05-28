@@ -1,5 +1,5 @@
 ---
-title: 附录 B：多 Agent 评测
+title: 附录 B　多 Agent 评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/HkLswsOVoi1QnDkCA7dcwjbVnDd"
 last_synced: "2026-05-27T14:59:41Z"
 ---

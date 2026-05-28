@@ -1,5 +1,5 @@
 ---
-title: 错误分析：Open-Axial Coding
+title: 第 5 章　错误分析与失败模式归类
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Kay5wEpDIimQE2kv8yIcTRvOnwb"
 last_synced: "2026-05-27T14:59:41Z"
 ---

@@ -1,12 +1,12 @@
 ---
-title: 评测集 v2 扩到 200 条（招牌菜 1B）
+title: 第 17 章　评测集扩充到 200 条
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/IVoMwx0ayiQdIYkyBZ8cbwBYnBd"
 last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么
 
-第 4 章拿到 60 条 L1 种子集（招牌菜 1A）。后续章节又叠加了 L2-100 多轮、L3-40 对抗。这一章把它们**统一成一个版本化、可演进的评测集**，并扩到 200 条（覆盖度更高的 L1）。读完你会：
+第 4 章拿到 60 条 L1 种子集。后续章节又叠加了 L2-100 多轮、L3-40 对抗。这一章把它们**统一成一个版本化、可演进的评测集**，并扩到 200 条（覆盖度更高的 L1）。读完你会：
 
 1. **拿到 200 条 L1 完整版**（60 → 200，加 140 条合成 + 人工筛）
 2. **学会合成 pipeline 的 cross-model 多样化**：用 Claude 合 + GPT review + 人工最终筛
@@ -381,7 +381,7 @@ CHANGELOG 写作 5 条规则：
 
 整体提升 4.9 个百分点。**这是一次完整的 evaluation-driven improvement cycle**：
 
-1. 写评测集（招牌菜 1A）
+1. 写评测集（第 4 章）
 2. 错误分析（第 5 章）
 3. 修 system prompt
 4. 加 judge（第 13 章）
@@ -404,7 +404,7 @@ EvalKit 把这套合到一个工程化 pipeline 里，是中文教学场景下�
 
 ## 本章要点回顾
 
-- **招牌菜 1B**：60 条 → 200 条扩集 pipeline，加入 cross-model 多样化、自动 review、版本管理
+- **第 17 章核心成果**：60 条 → 200 条扩集 pipeline，加入 cross-model 多样化、自动 review、版本管理
 - **3 个 v1 问题诊断**：合成器单一 / 缺 negative samples / 没版本化——v2 全部修复
 - **cross-model synthesis**：用 GPT-4o + Claude + Qwen 三个 generator 合成，避免单一 generator 偏置
 - **数据集版本号语义化**：MAJOR.MINOR.PATCH，跟代码版本一样管理，CHANGELOG 写 why
@@ -414,13 +414,13 @@ EvalKit 把这套合到一个工程化 pipeline 里，是中文教学场景下�
 
 到这一步：
 
-- L1 评测集从 60 → 200（招牌菜 1B 完成）
+- L1 评测集从 60 → 200（含 cross-model 合成 + 版本管理）
 - 评测集分三层版本化（L1 / L2 / L3），SemVer 规则 + CHANGELOG
 - 合成 pipeline 进阶（cross-model + 严格 lint + 人工 final）
 - ShopAgent 综合 pass 提升从 baseline 57.8% → improved 62.7%
 - 完整的 evaluation-driven improvement cycle 走通
 
-下一章是第二招牌菜——数据飞轮：让评测集随时间自动扩充，把"评测集从哪里来"的痛点彻底解决。
+下一章讲数据飞轮：让评测集随时间自动扩充，把"评测集从哪里来"的痛点彻底解决。
 
 ---
 

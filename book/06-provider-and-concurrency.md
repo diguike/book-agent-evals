@@ -1,5 +1,5 @@
 ---
-title: Provider 抽象与并发
+title: 第 6 章　Provider 抽象与并发调度
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/RNfkwv8xYi4xMLk27TScypBPnLg"
 last_synced: "2026-05-27T14:59:41Z"
 ---
@@ -427,7 +427,7 @@ export const PRICING_2026_05 = {
 
 ## 对照 inspect_ai 源码
 
-| EvalKit v2（这一章） | inspect_ai 对应 |
+| EvalKit（本章新增：Provider + 并发） | inspect_ai 对应 |
 |---|---|
 | `src/provider/types.ts` | `src/inspect_ai/model/_model.py` |
 | `src/provider/openai.ts` | `src/inspect_ai/model/_providers/openai.py` |
@@ -449,7 +449,7 @@ inspect_ai 内置了 30+ provider（Together、Groq、Bedrock、Vertex…），�
 
 ## 第 6 章总结
 
-到这一步 EvalKit 升级到 v2：
+本章为 EvalKit 新增了两层能力：
 
 1. 多 provider 抽象（5 个内置 + OpenAI 兼容协议覆盖国产模型）
 2. 缓存 wrapper（temperature=0 时自动命中，>0 时 bypass）

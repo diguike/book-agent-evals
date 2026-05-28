@@ -1,5 +1,5 @@
 ---
-title: EvalLog 设计与跨 run 对比
+title: 第 7 章　EvalLog 设计与跨次结果对比
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/C301wDsQTizFaskfEmucruN8nxf"
 last_synced: "2026-05-27T14:59:41Z"
 ---
@@ -379,7 +379,7 @@ inspect_ai 默认日志格式是 `.eval`——内部是 zip 包含 zstd 压缩�
 - 不能用文本 diff 工具看变化
 - 需要专门的 reader（CLI 或 Web UI）
 
-我们的定位是"教学 + 中小规模评测平台"——评测集 200-2000 条，每条 sample 5-50KB，总大小不超过 100MB。JSONL 完全够用，工程师能用熟悉的 Unix 工具直接处理。第 20 章上生产桥梁会讲什么时候该升级到 `.eval` 格式（大规模评测 + S3 部署时）。
+我们的定位是"教学 + 中小规模评测平台"——评测集 200-2000 条，每条 sample 5-50KB，总大小不超过 100MB。JSONL 完全够用，工程师能用熟悉的 Unix 工具直接处理。第 20 章会讲什么时候该升级到 `.eval` 格式（大规模评测 + S3 部署时）。
 
 ## EvalKit 现在的样子
 

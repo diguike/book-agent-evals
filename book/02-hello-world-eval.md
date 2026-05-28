@@ -1,5 +1,5 @@
 ---
-title: Hello World 评测
+title: 第 2 章　跑通第一个评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Ni2DwNPdBik0Jaks3pWczK6lnFh"
 last_synced: "2026-05-27T14:59:41Z"
 ---
@@ -30,7 +30,7 @@ last_synced: "2026-05-27T14:59:41Z"
 
 整个流程跑完，你拿到一个汇总数字（10 条里通过几条）和一份详细日志（每条具体怎么挂的）。**汇总数字告诉你"还行 / 不行"，日志告诉你"哪里不行"**。这是评测的最小闭环。
 
-第 3 章会把这个闭环长成有 dataset / solver / scorer 抽象的 EvalKit 骨架。这一章我们就用裸函数，把流程跑通即可——重点是建立直觉，不是建立框架。
+第 3 章会把这个闭环升级成有 Task / Dataset / Solver / Scorer 抽象的 EvalKit 框架。这一章我们就用裸函数，把流程跑通即可——重点是建立直觉，不是建立框架。
 
 ## 准备：环境与数据
 
@@ -330,7 +330,7 @@ mini (→ Haiku via mock-server) pass^1 也是 50%。**有意思的是 sonnet �
 | 没有错误分析、没法快速看 trace | 第 5 章：Open-Axial Coding + view / diff |
 | 数据集只有 10 条，覆盖度不够 | 第 4 章：从 0 造 60 条 L1 种子集 |
 
-下一章（第 3 章）开始把这套 minimal 长成有 dataset / solver / scorer 抽象的 EvalKit 骨架，然后接下来的 18 章一章一章把上面这些缺陷填上。
+下一章（第 3 章）开始把这套 minimal 升级成有 Task / Dataset / Solver / Scorer 四件套的 EvalKit 框架，然后接下来的 18 章一章一章把上面这些缺陷填上。
 
 ## 对照 inspect_ai 源码
 
@@ -377,7 +377,7 @@ git clone https://github.com/UKGovernmentBEIS/inspect_ai _references/inspect_ai
 
 到这里你已经走完一次评测的最小闭环：加载 → 跑 → 打分 → 写日志。拿到了两个真实数字（GPT-4o 80%、mini 60%），更重要的是看到了**评测的真正价值不是给你一个汇总数字，而是给你一份"哪里挂、为什么挂"的清单**。
 
-下一章把 100 行 minimal 长成有 Task / Dataset / Solver / Scorer 抽象的 EvalKit v1 骨架（约 600 行 TS），换一个 dataset、换一个 scorer 就不再需要改主循环代码，开始拥有"工程化评测框架"的样子。
+下一章把 100 行 minimal 升级成有 Task / Dataset / Solver / Scorer 抽象的 EvalKit 框架（约 600 行 TS），换一个 dataset、换一个 scorer 就不再需要改主循环代码，开始拥有"工程化评测框架"的样子。
 
 ---
 

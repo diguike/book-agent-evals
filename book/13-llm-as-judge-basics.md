@@ -1,5 +1,5 @@
 ---
-title: LLM-as-Judge 入门
+title: 第 13 章　搭建 LLM-as-Judge 评判器
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/AzuNweomEiDL1Ck49Pic2v1Wnyf"
 last_synced: "2026-05-27T14:59:41Z"
 ---

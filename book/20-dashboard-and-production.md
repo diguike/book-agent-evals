@@ -1,5 +1,5 @@
 ---
-title: Dashboard 与上生产桥梁
+title: 第 20 章　Dashboard 与生产部署
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UmEbwokc5iwnlvkN5CJc0zahnMc"
 last_synced: "2026-05-27T14:59:41Z"
 ---
@@ -468,7 +468,7 @@ EvalKit CLI 仍然能用（继续在 PR CI 里跑），但 dashboard 切换到 l
 | 适合规模 | < 50 工程师 | 任意 | 任意 |
 | 适合场景 | 教学 + 中小团队 | 中大型生产 | safety eval / 学术 |
 
-EvalKit **不是替代品**——它是**入门到精通的桥梁**。读完这本书，你既能直接用 EvalKit，也能看懂任何主流评测平台的源码。
+EvalKit **不是替代品**——读完这本书，你既能直接用 EvalKit 应对中小团队场景，也能看懂 langfuse / inspect_ai 等主流平台的源码，按需迁移。
 
 ## 本章要点回顾
 
@@ -490,7 +490,7 @@ EvalKit **不是替代品**——它是**入门到精通的桥梁**。读完这�
 - LLM-as-Judge + judgy 校正 + Bradley-Terry / Elo
 - pass^k + Cohen's Kappa
 - 数据飞轮 + CI 守门
-- Dashboard + 上生产桥梁
+- Dashboard 可视化 + 生产部署路径
 
 ShopAgent 在这套体系下从最初基线（sonnet via mock-server 综合 L1+L2+L3 加权约 65%）推到加固后 80%+（作者本地）：单维度看 L1 v2 77.5% → 85%、L3 45% → 60%、L2 ≈42% → 47%。可控演化、可观测、可回归。
 

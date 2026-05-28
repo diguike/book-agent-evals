@@ -1,17 +1,17 @@
 ---
-title: EvalKit 骨架 v1
+title: 第 3 章　搭建 EvalKit 评测框架
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/KQddwK6IFiHAgVkmbfMc1Kssnab"
 last_synced: "2026-05-27T14:59:41Z"
 ---
 
 ## 本章你会拿到什么
 
-把第 2 章的 100 行 minimal 升级成有抽象的 EvalKit 骨架（约 600 行 TS），引入 inspect_ai 同款的四件套：**Task / Dataset / Solver / Scorer**。读完这一章你能：
+把第 2 章的 100 行 minimal 升级成有完整抽象的 EvalKit 框架（约 600 行 TS），引入 inspect_ai 同款的四件套：**Task / Dataset / Solver / Scorer**。读完这一章你能：
 
 1. 理解为什么"100 行 minimal"必须变成"600 行框架"——抽象的成本和收益分别是什么
 2. 看懂 Task / Dataset / Solver / Scorer 各自的职责和接口签名
-3. 用 EvalKit v1 跑同样 10 条评测，输出格式更标准，新增 dataset / scorer 不再改主循环
-4. 拥有一个能接住后续 18 章功能扩展的脚手架
+3. 用 EvalKit 跑同样 10 条评测，输出格式更标准，新增 dataset / scorer 不再改主循环
+4. 拥有一个能接住后续 18 章功能扩展的框架
 
 代码在 `examples/evalkit/`（这是贯穿全书演进的框架本身，不是某一章的 demo）。本章 commit 是它的第一个有意义的版本。
 
@@ -181,7 +181,7 @@ const toolCallMatch: Scorer;         // 工具调用匹配（第 2 章的 score 
 
 后续章节会加更复杂的：`model_graded` (第 13 章 LLM-as-judge)、`trajectory_match` (第 11 章)、`db_state_delta` (第 11 章)、`rag_faithfulness` (第 8 章) 等。
 
-## EvalKit v1 目录结构
+## EvalKit 目录结构
 
 ```
 examples/evalkit/
@@ -327,9 +327,9 @@ export async function runTask(task: Task, opts: RunOptions): Promise<RunResult> 
 2. **recorder 是流式写入**——每跑完一个 sample 立刻落盘，挂了不丢已跑数据。这一点参考 inspect_ai 的 lazy-write 设计（`log/_recorders/eval.py`）
 3. **没有并发**——这一章 for 串行跑。第 6 章 Provider 抽象时会加并发池
 
-## 用 v1 跑同样 10 条样本
+## 用 EvalKit 跑同样 10 条样本
 
-把第 2 章的评测改写成 EvalKit v1 风格：
+把第 2 章的评测改写成 EvalKit 风格：
 
 ```ts
 // examples/ch02-hello-world/src/index.v2.ts —— 升级到 EvalKit
@@ -370,7 +370,7 @@ await runTask(l1HelloWorld, {
 
 ## CLI 命令
 
-EvalKit v1 提供一个简单 CLI：
+EvalKit 提供一个简单 CLI：
 
 ```bash
 # 跑评测
@@ -476,7 +476,7 @@ const mastraSolver: Solver = async (state, _generate) => {
 
 把我们这一章的实现指回 inspect_ai 对应文件：
 
-| EvalKit v1 文件 | inspect_ai 对应 |
+| EvalKit 文件 | inspect_ai 对应 |
 |---|---|
 | `src/types.ts` 里的 `Task` | `src/inspect_ai/_eval/task/task.py:61` 的 `Task` 类 |
 | `src/types.ts` 里的 `Sample` | `src/inspect_ai/dataset/_dataset.py:Sample`（L29-95） |
@@ -489,7 +489,7 @@ const mastraSolver: Solver = async (state, _generate) => {
 | `src/log/jsonl_recorder.ts` | `src/inspect_ai/log/_recorders/json.py` |
 | `src/eval/state.ts` 里的 `TaskState` | `src/inspect_ai/solver/_task_state.py`（约 700 行，我们只用了 50 行） |
 
-我们的 v1 ≈ inspect_ai 早期版本（约 0.3.50 左右）的核心抽象，约占 inspect_ai 当前代码量的 5%——但已经能跑完整的评测闭环。后续章节会按需补齐 inspect_ai 没省略的能力（并发、缓存、TaskState 限额、view 前端、多 metric 聚合等）。
+当前这套 EvalKit ≈ inspect_ai 早期版本（约 0.3.50 左右）的核心抽象，约占 inspect_ai 当前代码量的 5%——但已经能跑完整的评测闭环。后续章节会按需补齐 inspect_ai 没省略的能力（并发、缓存、TaskState 限额、view 前端、多 metric 聚合等）。
 
 ## 本章要点回顾
 
@@ -497,7 +497,7 @@ const mastraSolver: Solver = async (state, _generate) => {
 - **Solver 接口故意做窄**：任何能跑出"消息 + 工具调用 + 最终回复"的 agent 都能 30-50 行包装成 Solver（Vercel AI SDK / LangChain.js / Mastra 都能接）
 - **接现有 agent 的两种方式**：进程内 import（本仓库示例）或 HTTP 服务（生产架构），关键在于把"消息 / 工具调用 / 回复"翻译进 TaskState
 - **runner 流式落盘**：每跑完一条 sample 立刻 append 到 JSONL，挂了不丢已跑数据
-- **接口稳定承诺**：v1 这一章定下来的接口在后续 17 章只加字段、不改签名
+- **接口稳定承诺**：这一章定下来的接口在后续 17 章只加字段、不改签名
 
 ## 第 3 章总结
 
@@ -508,7 +508,7 @@ const mastraSolver: Solver = async (state, _generate) => {
 - JSONL 流式日志，挂了不丢已跑数据
 - CLI 三个子命令（run / view / diff，后两个 stub）
 
-下一章开始你会用这个框架做第一件"真正生产级"的事：**从 0 造 60 条 L1 评测集**——这是招牌菜 1A，是回到所有工程师真正痛点（评测集到底从哪里来）的开始。
+下一章开始你会用这个框架做第一件"真正生产级"的事：**从 0 造 60 条 L1 评测集**——直指工程师最真实的痛点：评测集到底从哪里来。
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: pass^k 可靠性与一致性
+title: 第 15 章　pass^k 与多次运行稳定性
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/JP0vwDFfRiNn8QkgdPPcZ3URnp1"
 last_synced: "2026-05-27T14:59:41Z"
 ---
