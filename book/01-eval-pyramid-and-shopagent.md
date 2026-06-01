@@ -1,7 +1,7 @@
 ---
 title: 第 1 章　评测金字塔与 ShopAgent 接口
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UocOwwmxqiffTBksfWvcgEGmnrd"
-last_synced: "2026-05-27T14:56:56Z"
+last_synced: "2026-06-01T04:21:48Z"
 ---
 
 ## 本章你会拿到什么
@@ -40,12 +40,29 @@ last_synced: "2026-05-27T14:56:56Z"
 - 我们 fine-tune 了一版 Qwen3 内部专用模型，它和原版相比 MMLU / CEval / GSM8K 是涨了还是跌了？
 - Claude Sonnet 4 → Sonnet 4.5 升级，我们能拿到几个点提升？
 
-**典型工具**：MMLU、HumanEval、HELM、BIG-bench、CEval、CMMLU、SuperCLUE、MT-Bench、lm-evaluation-harness、OpenCompass。
+**典型工具**：
+
+基准数据集（用来出题的）：
+
+- [MMLU](https://github.com/hendrycks/test)（Massive Multitask Language Understanding）：57 学科多选题，测综合知识，论文 [arXiv:2009.03300](https://arxiv.org/abs/2009.03300)
+- [HumanEval](https://github.com/openai/human-eval)：OpenAI 的 Python 代码补全基准，164 道编程题，看函数能否通过单元测试
+- [GSM8K](https://github.com/openai/grade-school-math)：OpenAI 的小学数学应用题集，测多步算术推理
+- [HELM](https://crfm.stanford.edu/helm/)（Holistic Evaluation of Language Models）：Stanford CRFM 的"整体评估"，覆盖准确性、鲁棒性、公平性等多维度
+- [BIG-bench](https://github.com/google/BIG-bench)：Google 主导的大型基准，包含 200+ 任务，强调"难到现有模型做不出来"
+- [C-Eval](https://github.com/hkust-nlp/ceval)：港科大主导的中文综合评估，52 学科，[cevalbenchmark.com](https://cevalbenchmark.com/) 有排行榜
+- [CMMLU](https://github.com/haonan-li/CMMLU)：MMLU 的中文版，67 学科，覆盖中国本地知识
+- [SuperCLUE](https://github.com/CLUEbenchmark/SuperCLUE)：CLUE 团队维护的中文综合榜单，国产模型常引用
+- [MT-Bench](https://github.com/lm-sys/FastChat/tree/main/fastchat/llm_judge)：LMSYS 出品，80 道开放式多轮题 + GPT-4 当评委的对话基准
+
+评测运行框架（把基准跑起来的）：
+
+- [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)：EleutherAI 维护，主流英文基准的事实标准跑手，HuggingFace Open LLM Leaderboard 也用它
+- [OpenCompass](https://github.com/open-compass/opencompass)：上海 AI Lab 维护，国产模型横评的事实标准，附录 A 会用到
 
 **特点**：
 - 评测对象是**模型权重本身**，不涉及 prompt 工程 / 工具 / 编排
 - 数据集是**通用知识测试**，跟你的业务无关（你不会在 MMLU 上学到怎么处理退款工单）
-- 指标是**accuracy / Elo / loss**，单一维度
+- 指标是 **accuracy / Elo / loss**，单一维度（Elo 源自国际象棋的相对排名分，[LMArena](https://lmarena.ai/) 用它给模型两两对战打分）
 - 看的是**pass^1**（一次成功率），因为模型对同一道题的回答相对稳定
 
 ### Layer 2：Agent 评测
@@ -57,14 +74,31 @@ last_synced: "2026-05-27T14:56:56Z"
 - 我们把 GPT-4o 换成 GPT-4o-mini 省成本，agent 在哪些 task 上崩了？
 - 我们给 agent 加了一个 cross-session memory 模块，多轮任务完成率有变化吗？是涨还是跌？
 
-**典型工具**：inspect_ai、promptfoo、Ragas、langfuse、agentevals、τ²-bench、SWE-bench、BFCL。
+**典型工具**：
+
+通用 agent 评测框架：
+
+- [inspect_ai](https://github.com/UKGovernmentBEIS/inspect_ai)：英国 AI Safety Institute（UK AISI）出品的 Python 评测框架，本书 EvalKit 的对照参考，每章末尾会指回它的源码
+- [promptfoo](https://github.com/promptfoo/promptfoo)：TS/Node 系的 prompt 与 LLM 评测 CLI，YAML 配置驱动
+- [agentevals](https://github.com/langchain-ai/agentevals)：LangChain 出品，专注 trajectory（执行轨迹）评测的小工具集
+
+垂直方向工具：
+
+- [Ragas](https://github.com/explodinggradients/ragas)：专做 RAG（Retrieval-Augmented Generation，检索增强生成）系统的评测，回答相关性、上下文召回率等指标
+- [Langfuse](https://github.com/langfuse/langfuse)：开源 LLM observability 平台，记录 trace（调用轨迹）并挂评测打分
+
+Agent 基准数据集：
+
+- [τ²-bench](https://github.com/sierra-research/tau2-bench)：Sierra Research 出品的多轮工具调用基准，retail / airline / telecom 三个场景，本书反复引用它的 pass^k 数据
+- [SWE-bench](https://www.swebench.com/)：Princeton 出品的真实 GitHub issue 软件工程基准，看 agent 能否解 Python 仓库里的真实 bug
+- [BFCL](https://gorilla.cs.berkeley.edu/leaderboard.html)（Berkeley Function Calling Leaderboard）：UC Berkeley 的函数调用排行榜，Gorilla 项目出品
 
 **特点**：
 - 评测对象是**整个 agent 系统**，模型只是其中一个零件
 - 数据集是**你业务领域的任务集**（电商客服 agent 用的是退款/换货/查询任务，不是 MMLU）
 - 指标是**任务完成率 / trajectory 匹配 / tool 调用正确性 / state delta / judge 评分**，多维度
 - 看的是 **pass^k**（同一任务独立跑 k 次、每次都成功的概率），因为 agent 系统的随机性来自工具调用、用户输入、temperature 多个源
-- 经常需要 **sandbox**（agent 调用工具时要执行真实代码或模拟环境）
+- 经常需要 **sandbox**（沙箱：agent 调用工具时要执行真实代码或模拟环境，常用 Docker / Firecracker 隔离）
 
 ### Layer 3：产品评测
 
@@ -73,14 +107,14 @@ last_synced: "2026-05-27T14:56:56Z"
 **典型问题**：
 - 我们的 AI 客服上线一个月后，人工客服工单量降了多少？
 - agent 服务过的用户，下次复购率比未服务的用户高多少？
-- 用户对 agent 的满意度评分（CSAT）是几颗星？
+- 用户对 agent 的满意度评分（CSAT，Customer Satisfaction Score，客户满意度评分）是几颗星？
 
-**典型工具**：A/B 实验平台、数据仓库、BI dashboard、用户问卷。
+**典型工具**：A/B 实验平台、数据仓库、BI（Business Intelligence，商业智能）dashboard、用户问卷。
 
 **特点**：
 - 评测对象是**产品 + 用户 + 业务流程**的总体表现
 - 数据来自**线上真实流量**，不是离线评测集
-- 指标是**业务指标**：CSAT、NPS、转化率、留存率、ARR
+- 指标是**业务指标**：CSAT、NPS（Net Promoter Score，净推荐值，"愿意把产品推荐给朋友吗"打 0–10 分）、转化率、留存率、ARR（Annual Recurring Revenue，年度经常性收入）
 - 时间窗口是**周 / 月 / 季度**级别，不是单次评测分钟级别
 
 ## 三者的关系
@@ -124,7 +158,7 @@ flowchart TD
 
 "我们要给 agent 做评测，所以我们 fork 了 lm-evaluation-harness 项目，把客服任务塞进去跑。"
 
-错。lm-evaluation-harness 是 Layer 1 框架，假设输入输出都是单次模型调用，没有多轮、没有工具、没有 trajectory。把多轮工具调用任务硬塞进去要么跑不通，要么跑通了但评测指标完全失真。Agent 评测有自己专门的框架（inspect_ai、本书的 EvalKit），它们的核心抽象（Task / Dataset / Solver / Scorer / TaskState）是为 Layer 2 设计的。
+错。[lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 是 Layer 1 框架，假设输入输出都是单次模型调用，没有多轮、没有工具、没有 trajectory。把多轮工具调用任务硬塞进去要么跑不通，要么跑通了但评测指标完全失真。Agent 评测有自己专门的框架（[inspect_ai](https://github.com/UKGovernmentBEIS/inspect_ai)、本书的 EvalKit），它们的核心抽象（Task / Dataset / Solver / Scorer / TaskState）是为 Layer 2 设计的。
 
 **真实代价**：作者另一个团队照着 lm-eval-harness 改了套路跑 agent 评测，结果只评了"模型回复字面对不对"——工具调用错误、trajectory 违 policy 全部漏掉。3 个月后退款工单是手工提交的 10 倍多，回头查发现"评测全绿"的版本一直没抓到这些问题：架构错了，挂的样本根本进不了评测指标。
 
@@ -142,7 +176,7 @@ Layer 2 不是"Layer 1 加几个工具"。它有几个独有的工程难题，�
 
 模型评测只关心模型的输出文本对不对。Agent 评测关心**调用工具后世界发生了什么变化**——agent 调了 `refund_order`，订单状态是不是从 "shipped" 变成了 "refunded"？退款金额是不是 199 元而不是 0 元（回到我前言里那个事故）？
 
-这种"评测的是世界的变化而不是模型的回复"，是 Layer 2 独有的。τ-bench 把这套做到了极致：reward = (agent 跑完后的 DB hash == 重放参考轨迹后的 DB hash)，完全不看 agent 说了什么。
+这种"评测的是世界的变化而不是模型的回复"，是 Layer 2 独有的。[τ-bench](https://github.com/sierra-research/tau-bench)（Sierra Research 的多轮工具调用基准，[arXiv:2406.12045](https://arxiv.org/abs/2406.12045)）把这套做到了极致：reward = (agent 跑完后的 DB hash == 重放参考轨迹后的 DB hash)，完全不看 agent 说了什么。
 
 ### 难题 3：pass^k 一致性
 
@@ -160,13 +194,13 @@ Layer 2 不是"Layer 1 加几个工具"。它有几个独有的工程难题，�
 
 ### 难题 5：policy 遵守
 
-Agent 经常被绑上业务约束："退款前必须先查订单状态"、"已发货订单不能改地址"、"不能透露其他用户隐私"。Agent 评测要能抓到 policy 违反——但 policy 通常是自然语言写的（"必须先确认"），不能用规则匹配，需要 LLM-as-Judge 来评。第 13、14 章会讲 judge 怎么设计、怎么用 judgy 库做统计校正。
+Agent 经常被绑上业务约束："退款前必须先查订单状态"、"已发货订单不能改地址"、"不能透露其他用户隐私"。Agent 评测要能抓到 policy 违反——但 policy 通常是自然语言写的（"必须先确认"），不能用规则匹配，需要 **LLM-as-Judge**（让另一个 LLM 充当评委对 agent 的输出打分）来评。第 13、14 章会讲 judge 怎么设计、怎么用 [judgy](https://github.com/ai-evals-course/judgy)（Hamel & Shreya 课程开源的统计校正库，校正 judge 自身的偏差）做统计校正。
 
 ## ShopAgent：本书的"被评测样本"
 
 接下来的每一章都会用一个具体的 agent 做评测练习。这个 agent 叫 **ShopAgent**，是一个电商售后客服 Agent。
 
-**重要约定**：ShopAgent 在仓库里已经写好（见 `examples/shopagent/`），本书**不讲它怎么开发**。它的实现就是用 Vercel AI SDK + GPT-4o + Mock SQLite DB 写的一个不到 800 行 TS 的 agent，没什么新意。读者如果想学 agent 工程本身，请翻我之前的几本书：《Hermes Agent 源码解读》《OpenClaw 源码解析》《百万级 AI Agent 平台架构》《Agent Memory 工程实战》。
+**重要约定**：ShopAgent 在仓库里已经写好（见 `examples/shopagent/`），本书**不讲它怎么开发**。它的实现就是用 [Vercel AI SDK](https://sdk.vercel.ai)（一个 TS 系 LLM 调用 + 工具编排库）+ GPT-4o + Mock SQLite DB 写的一个不到 800 行 TS 的 agent，没什么新意。读者如果想学 agent 工程本身，请翻我之前的几本书：《Hermes Agent 源码解读》《OpenClaw 源码解析》《百万级 AI Agent 平台架构》《Agent Memory 工程实战》。
 
 本书里，ShopAgent 只是评测对象。本书只看它的接口，不看它的实现。
 
@@ -179,7 +213,7 @@ ShopAgent 处理电商售后场景的 5 类用户请求：
 | **订单查询** | "我那个订单到哪了" | 查订单状态 + 查物流 |
 | **订单修改** | "我地址写错了能改吗" | 判断订单状态 → 改地址 / 改数量 / 取消 |
 | **退换货** | "这件衣服我不想要了" | 判断政策 → 走退款 / 换货流程 |
-| **商品咨询** | "这个洗衣机能洗羽绒服吗" | RAG 检索 FAQ 知识库 → 回答 |
+| **商品咨询** | "这个洗衣机能洗羽绒服吗" | RAG（Retrieval-Augmented Generation，检索增强生成）检索 FAQ 知识库 → 回答 |
 | **客诉处理** | "你们什么时候解决" | 判断升级 → 发券补偿 / 升级人工 |
 
 ### 它能调的工具（8 个）

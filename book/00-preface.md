@@ -1,7 +1,7 @@
 ---
 title: 前言
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/OMAzw6qrPiQynXkF035cxzv5nph"
-last_synced: "2026-05-29T00:55:00Z"
+last_synced: "2026-06-01T04:40:09Z"
 ---
 
 ## 为什么写这本书
@@ -20,16 +20,16 @@ last_synced: "2026-05-29T00:55:00Z"
 
 适合你读，如果你是这种人：
 
-- **应用层 LLM / Agent 工程师**，已经在用 Vercel AI SDK / LangChain.js / Mastra 之类的工具搭过 agent，但没系统做过评测
-- **从模型训练转应用层的工程师**，熟悉 lm-evaluation-harness / OpenCompass 那套学术评测，但发现到了 agent 层根本对不上号
+- **应用层 LLM / Agent 工程师**，已经在用 [Vercel AI SDK](https://sdk.vercel.ai) / [LangChain.js](https://js.langchain.com)（LangChain 的 TS 版本）/ [Mastra](https://mastra.ai)（新兴的 TS 系 agent 框架）之类的工具搭过 agent，但没系统做过评测
+- **从模型训练转应用层的工程师**，熟悉 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) / [OpenCompass](https://github.com/open-compass/opencompass) 那套学术评测，但发现到了 agent 层根本对不上号
 - **被老板要求"给 agent 出质量报告"** 但找不到入手点的工程师
 - **想在公司内部建立评测体系** 但不知道从哪里开始的技术负责人
 - **Node + TypeScript 全栈背景**——这本书的代码全部是 TS，与你日常的技术栈无缝对接
 
 不适合你读，如果你是这种人：
 
-- **纯模型训练 / RLHF / DPO 工程师**——本书侧重应用层评测，不深入后训练
-- **完全没接触过 LLM API 调用的人**——你需要先会用 OpenAI SDK 之类的工具发一次 chat completion 请求
+- **纯模型训练 / RLHF / DPO 工程师**——RLHF（Reinforcement Learning from Human Feedback，基于人类反馈的强化学习）与 DPO（[Direct Preference Optimization](https://arxiv.org/abs/2305.18290)，直接偏好优化）都属于模型后训练阶段；本书侧重应用层评测，不深入后训练
+- **完全没接触过 LLM API 调用的人**——你需要先会用 [OpenAI SDK](https://github.com/openai/openai-node) 之类的工具发一次 chat completion 请求
 - **想要"现成 prompt 模板速查手册"的人**——本书强调方法论 + 工程实战，不是 cookbook
 - **拒绝 TypeScript 的纯 Python 用户**——类比能跨语言，但代码读起来会吃力
 
@@ -50,7 +50,7 @@ last_synced: "2026-05-29T00:55:00Z"
 - **Agent 开发本身**——本书的 ShopAgent 仓库里已经写好，作为"被评测的样本"使用。Agent 工程请看我之前的几本书：《Hermes Agent 源码解读》《OpenClaw 源码解析》《百万级 AI Agent 平台架构》《Agent Memory 工程实战》
 - 模型预训练 / 后训练 / RLHF / DPO 的内部机制
 - LLM 推理引擎实现
-- Agent 编排框架本身的设计（LangGraph / CrewAI 已有专书）
+- Agent 编排框架本身的设计（[LangGraph](https://github.com/langchain-ai/langgraph) 是 LangChain 的图式编排库，[CrewAI](https://github.com/crewAIInc/crewAI) 是多 agent 协作框架，已有专书）
 - Prompt 工程入门——默认你已会
 
 ## 这本书怎么读
@@ -64,19 +64,19 @@ last_synced: "2026-05-29T00:55:00Z"
 
 - **快速上手路线（5-7 天）**：第一部分 3 章 → 第二部分 2 章，读到这里你已经有 60 条评测集 + 能直接跑的 EvalKit 可以回公司用。**为什么这么挑**：前 5 章覆盖"评测的最小心智模型 + 第一份能跑的评测集"，是周末两天能消化的最小单元。下周一回公司就能开始给自家 agent 造评测集。后面的章节都是这套基础上的工程化扩展，不影响当下能干活
 - **系统学习路线（3-4 周）**：按章节顺序读，每章动手做配套 example。读到第五部分时你会拿到完整 200 条评测集 + 数据飞轮闭环，能给团队建一套真正的工程化评测体系。**为什么这么挑**：评测是一套互相咬合的系统（评测集 → CI → 飞轮 → judge → pass^k），断开任何一环效果都打折。3-4 周对应每周 1 个晚上 + 周末半天的节奏，跟着仓库代码动手做，是把书"内化"成肌肉记忆的最短路径
-- **深入源码路线**：每章末「对照 inspect_ai 源码」小节，把书里的 TS 实现指回 inspect_ai 对应的 Python 文件，建立"我写的 200 行 ≈ 人家的哪个文件"的双向地图。**为什么这么挑**：如果你需要给公司搭一套自研评测平台（langfuse / Braintrust 价格太贵或数据合规不允许上云），你需要知道每个核心抽象在生产级框架里是怎么实现的——inspect_ai 是英国 AISI 在评测 Claude / GPT-4 安全性的实际工具，工程质量经过 frontier model lab 验证，是最好的参照系
+- **深入源码路线**：每章末「对照 inspect_ai 源码」小节，把书里的 TS 实现指回 inspect_ai 对应的 Python 文件，建立"我写的 200 行 ≈ 人家的哪个文件"的双向地图。**为什么这么挑**：如果你需要给公司搭一套自研评测平台（[langfuse](https://github.com/langfuse/langfuse) / [Braintrust](https://www.braintrust.dev/) 等闭源商业评测平台价格太贵或数据合规不允许上云），你需要知道每个核心抽象在生产级框架里是怎么实现的——inspect_ai 是英国 AISI（AI Safety Institute，AI 安全研究所）在评测 Claude / GPT-4 安全性的实际工具，工程质量经过 frontier model lab（前沿模型实验室）验证，是最好的参照系
 
 读完这本书你能干什么：
 
 - 给任何 agent 项目造一套 200 条 L1 + 100 条 L2 + 40 条 L3 评测集（4-6 周工程量）
 - 把评测接入 GitHub Actions CI，每个 PR 自动跑 + 显著性检验，30 分钟从 0 接通
-- 写出一个跟人工标注 Cohen's Kappa κ ≥ 0.6 的 LLM-as-Judge，policy 维度可信
+- 写出一个跟人工标注 Cohen's Kappa（两个标注者一致性的统计指标，1.0 完美一致 / 0 随机一致，κ ≥ 0.6 一般被视为可接受）≥ 0.6 的 LLM-as-Judge，policy 维度可信
 - 跑数据飞轮把线上日志反哺评测集，每周新增 5-10 条 hard case
 - 给老板写一份能站得住脚的"AI Agent 质量报告"——业务指标、可靠性、安全性三个维度都有数据支撑
 
 ## 关于书里的几个选择
 
-**为什么是 TypeScript？** 因为 2026 年的应用层 Agent 事实上是 TS 主场——Vercel AI SDK、LangChain.js、Mastra、Bun runtime，这一波生态的工程师都在用 TS。但同领域的权威英文书（Hamel Husain & Shreya Shankar 的 O'Reilly《Evals for AI Engineers》）100% 是 Python 生态。这是我决定写这本书的最直接动因之一——填上这个空白。
+**为什么是 TypeScript？** 因为 2026 年的应用层 Agent 事实上是 TS 主场——Vercel AI SDK、LangChain.js、Mastra、[Bun](https://bun.sh)（Zig 写的 JS/TS 运行时，启动快、内置 bundler / test runner，是 Node.js 的现代替代品）runtime，这一波生态的工程师都在用 TS。但同领域的权威英文书（Hamel Husain & Shreya Shankar 的 O'Reilly《Evals for AI Engineers》）100% 是 Python 生态。这是我决定写这本书的最直接动因之一——填上这个空白。
 
 **为什么是电商客服场景？** 因为它的评测维度覆盖度最高：多轮对话、工具调用、RAG 检索、policy 约束、不可逆操作、对抗用户全都有。一个场景把所有评测方法都装下，省得你来回切场景上下文。中文电商客服又是国内最普遍的 Agent 落地形态——智能客服市场 2025 年 650 亿+，几乎所有 B2C 公司都在做。从书里学到的方法论可以直接搬到自己公司，不需要转译。
 
@@ -93,7 +93,7 @@ last_synced: "2026-05-29T00:55:00Z"
 
 ## 致谢
 
-感谢英国 AISI 团队开源 inspect_ai，让评测框架有了行业事实标准的参照。感谢 Sierra 团队的 τ-bench / τ²-bench / τ³-bench，让 agent eval 范式有了可借鉴的基线。感谢 Hamel Husain 和 Shreya Shankar 公开他们的方法论框架——Three Gulfs、Open-Axial Coding、LLM-as-Judge 7 步法、judgy 统计校正——这本书在方法论层面对他们的工作有大量致敬引用，每一处都注明出处。
+感谢英国 AISI 团队开源 [inspect_ai](https://github.com/UKGovernmentBEIS/inspect_ai)，让评测框架有了行业事实标准的参照。感谢 [Sierra Research](https://sierra.ai) 团队的 [τ-bench](https://github.com/sierra-research/tau-bench) / [τ²-bench](https://github.com/sierra-research/tau2-bench) / τ³-bench 三代多轮工具调用基准，让 agent eval 范式有了可借鉴的基线。感谢 Hamel Husain 和 Shreya Shankar 公开他们在 [AI Evals 课程](https://www.aievals.com)中的方法论框架——Three Gulfs（评测中的三种鸿沟：理解 / 度量 / 改进）、Open-Axial Coding（开放-轴向编码，把 agent 错误样本归纳成主题树的定性研究方法）、LLM-as-Judge 7 步法、[judgy](https://github.com/ai-evals-course/judgy) 统计校正库——这本书在方法论层面对他们的工作有大量致敬引用，每一处都注明出处。
 
 感谢和我聊过 agent 评测、踩过同样坑的所有同行。如果这本书帮你少踩几个坑，就值了。
 

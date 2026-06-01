@@ -1,7 +1,7 @@
 ---
 title: 第 5 章　错误分析与失败模式归类
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Kay5wEpDIimQE2kv8yIcTRvOnwb"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:14Z"
 ---
 
 ## 本章你会拿到什么
@@ -27,9 +27,9 @@ last_synced: "2026-05-27T14:59:41Z"
 2. **Axial Coding** — 把这堆备注归纳成 4-6 个 failure mode 标签
 3. **Quantification** — 数频次，按"影响 × 难度"排序
 
-这套方法借自定性社会学研究的 **Grounded Theory**——不必了解它的学术背景，把它当作"先标便利贴（Open Coding：每条挂样本一张便利贴写一句失败原因），再按相似度归堆（Axial Coding：4-6 个堆 = 4-6 个 failure mode）"就行。Hamel 在 NurtureBoss 案例里用这套方法把日期处理成功率从 33% 提到 95%（[Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/)）。
+这套方法借自定性社会学研究的 **Grounded Theory**（[扎根理论](https://en.wikipedia.org/wiki/Grounded_theory)，从原始观察数据自下而上归纳概念的研究方法）——不必了解它的学术背景，把它当作"先标便利贴（Open Coding：每条挂样本一张便利贴写一句失败原因），再按相似度归堆（Axial Coding：4-6 个堆 = 4-6 个 failure mode）"就行。Hamel 在 NurtureBoss 案例里用这套方法把日期处理成功率从 33% 提到 95%（[Field Guide to Rapidly Improving AI Products](https://hamel.dev/blog/posts/field-guide/)）。
 
-我们这一章把它落到 EvalKit 上：手工部分（Open Coding）用 `evalkit view` 看 trace，自动部分（Axial Coding 辅助分类）用 LLM 做 zero-shot 归类，最终人工敲定 failure mode 列表。
+我们这一章把它落到 EvalKit 上：手工部分（Open Coding）用 `evalkit view` 看 trace，自动部分（Axial Coding 辅助分类）用 LLM 做 zero-shot（零样本：prompt 里不给任何示例，让模型直接根据任务描述做推理；对应概念有 few-shot：给几个示例引导模型）归类，最终人工敲定 failure mode 列表。
 
 ## Step 1：Open Coding —— 一条一条看 trace
 

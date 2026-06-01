@@ -1,7 +1,7 @@
 ---
 title: 附录 C　与业务指标对齐
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/P32lwF09IiD7R2kMxuDcf6zYnNd"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:36Z"
 ---
 
 ## 附录定位
@@ -107,8 +107,8 @@ Day 21: 写 readout 给老板
 
 回报：
   - 人工客服替代节省（年节省 = 人工 cost - LLM cost - 工程 cost）
-  - CSAT 提升带来的 LTV 提升（CSAT +0.5 → 复购率 +5% → 年 LTV 增加 X）
-  - 转化率提升带来的 GMV 增加（转化率 +N% → 月新增 GMV）
+  - CSAT 提升带来的 LTV（Life Time Value，用户终身价值，一个用户在生命周期内给公司贡献的总收入）提升（CSAT +0.5 → 复购率 +5% → 年 LTV 增加 X）
+  - 转化率提升带来的 GMV（Gross Merchandise Volume，商品交易总额，电商行业核心规模指标）增加（转化率 +N% → 月新增 GMV）
   - 黑产损失减少（黑产损失率 -N% → 年节省）
 ```
 

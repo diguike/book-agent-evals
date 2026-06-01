@@ -1,7 +1,7 @@
 ---
 title: 第 6 章　Provider 抽象与并发调度
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/RNfkwv8xYi4xMLk27TScypBPnLg"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:16Z"
 ---
 
 ## 本章你会拿到什么
@@ -11,7 +11,7 @@ last_synced: "2026-05-27T14:59:41Z"
 1. **跑 60 条评测从 90 秒压到 19 秒**——并发池 + 缓存 + 重试三件套
 2. **拥有一个 Provider 抽象**：OpenAI / Anthropic / DeepSeek / Qwen / Claude 都能即插即用
 3. **理解为什么不能用 `Promise.all`**——以及 inspect_ai 为什么从固定并发改成 adaptive
-4. **看懂中文 tokenizer 对 cost 横评的影响**——给国产模型评测时的归一化处理
+4. **看懂中文 tokenizer 对 cost 横评的影响**——给国产模型评测时的归一化处理（tokenizer：把文本切分成 token 的算法，不同模型用不同的切分器，token 数差异直接影响计费）
 
 代码增量在 `examples/evalkit/src/provider/`（新建）和 `src/solver/generate.ts`（重写，把第 3 章的 stub 换成真实实现）。
 
@@ -34,8 +34,8 @@ async function defaultGenerate(model: string) {
 只要你想做下面任何一件事就崩：
 
 - **换 Anthropic 模型**：Claude API 用 `anthropic.messages.create()`，参数 schema 不同（system prompt 单列、`max_tokens` 必填）
-- **换国产模型**：DeepSeek / Qwen / GLM 用 OpenAI 兼容协议但 BASE_URL 不同、`response_format` 不一致
-- **批量评测换 batch API**：OpenAI / Anthropic 都有 50% 折扣的 batch endpoint，schema 跟普通 API 不一样
+- **换国产模型**：[DeepSeek](https://www.deepseek.com)（深度求索）/ [Qwen](https://github.com/QwenLM/Qwen)（阿里通义千问）/ [GLM](https://github.com/THUDM/GLM-4)（智谱清华系）三家国产基座模型都用 OpenAI 兼容协议但 BASE_URL 不同、`response_format` 不一致
+- **批量评测换 batch API**：OpenAI / Anthropic 都有 50% 折扣的 batch endpoint（批量异步接口，结果几小时内返回），schema 跟普通 API 不一样
 - **加缓存**：每次都新建 SDK 实例，连接池没法复用
 
 抽象成 Provider 后，模型字符串 → provider 实例由 EvalKit 路由：
@@ -306,7 +306,7 @@ return {
 
 ## 并发：用 Semaphore + pmap 而不是 Promise.all
 
-EvalKit 自带的 `pmap`（在 `src/provider/concurrency.ts`）实现跟 p-limit 等价但零依赖，免装外部包：
+EvalKit 自带的 `pmap`（在 `src/provider/concurrency.ts`）实现跟 [p-limit](https://github.com/sindresorhus/p-limit)（Sindre Sorhus 写的 promise 并发限制库，社区事实标准）等价但零依赖，免装外部包：
 
 ```ts
 // examples/evalkit/src/eval/runner.ts —— 升级到并发
@@ -332,7 +332,7 @@ export async function runTask(task: Task, opts: RunOptions): Promise<RunResult> 
 
 为什么不用 `Promise.all` 直接全发？三个原因：
 
-1. **rate limit**：OpenAI / Anthropic 都有 RPM / TPM 限额。60 个并发同时打过去几乎必触发 429
+1. **rate limit**：OpenAI / Anthropic 都有 RPM（requests per minute，每分钟请求数）/ TPM（tokens per minute，每分钟 token 数）限额。60 个并发同时打过去几乎必触发 429（HTTP "Too Many Requests"）
 2. **错误隔离**：一个 sample 挂了，`Promise.all` 整个 reject。`pmap` 内部 `try/catch` 单条隔离
 3. **debug 友好**：5 并发的日志输出顺序可预测，60 并发完全乱序
 
@@ -443,7 +443,7 @@ inspect_ai 内置了 30+ provider（Together、Groq、Bedrock、Vertex…），�
 
 - **Provider 抽象**：把"调 LLM"这一步从 generate solver 中分离，统一 OpenAI / Anthropic / DeepSeek / Qwen / 智谱五大 provider 的接口
 - **函数式 API**：`withRetry(withCache(openaiProvider()))` 组合包装，每层职责单一
-- **并发 = Semaphore + pmap**：自写零依赖，避开 p-limit。默认 5 并发足够 + rate limit 友好 + 错误隔离
+- **并发 = Semaphore + pmap**：Semaphore（信号量，CS 经典并发原语，控制同时进行的任务上限）自写零依赖，避开 p-limit。默认 5 并发足够 + rate limit 友好 + 错误隔离
 - **Cache 命中策略**：temperature=0 时自动命中（评测主场景），>0 时 bypass（user simulator）
 - **中文 tokenizer cost 差异 14x**：英文 GPT 同样字数贵 14 倍——选模型时除了准确率还要看每语种 cost
 

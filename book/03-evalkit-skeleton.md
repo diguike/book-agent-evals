@@ -1,7 +1,7 @@
 ---
 title: 第 3 章　搭建 EvalKit 评测框架
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/KQddwK6IFiHAgVkmbfMc1Kssnab"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:10Z"
 ---
 
 ## 本章你会拿到什么
@@ -439,7 +439,7 @@ const langchainSolver: Solver = async (state, _generate) => {
 };
 ```
 
-LangSmith 的 traces 跟 EvalKit EvalLog 不直接兼容，但可以 `langsmithTracer.flush()` 后用脚本把 traces 转成 EvalKit Sample。
+[LangSmith](https://smith.langchain.com)（LangChain 官方的商业版 trace / observability 平台）的 traces 跟 EvalKit EvalLog 不直接兼容，但可以 `langsmithTracer.flush()` 后用脚本把 traces 转成 EvalKit Sample。
 
 ### Mastra
 

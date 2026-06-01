@@ -1,7 +1,7 @@
 ---
 title: 第 7 章　EvalLog 设计与跨次结果对比
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/C301wDsQTizFaskfEmucruN8nxf"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:17Z"
 ---
 
 ## 本章你会拿到什么
@@ -11,7 +11,7 @@ EvalLog 是评测平台的"心跳"——它决定你能从一次评测里挖出�
 1. **定下 EvalLog 完整 schema**（含 5 段：eval / plan / results / stats / samples），整本书剩下的章节不再变
 2. **完整实现 `view` / `diff` / `list` 三个 CLI 命令**——第 5 章是 80 行 stub，这一章升级到 ~400 行可用版
 3. **拿到一份"run 命名约定"和"日志归档策略"** —— 让团队多人评测时不互相覆盖
-4. **理解为什么 inspect_ai 用 zip+zstd 而我们用 JSONL**——两种选择的取舍
+4. **理解为什么 inspect_ai 用 zip+zstd（[Zstandard](https://github.com/facebook/zstd)，Facebook 开源的高比率高速度压缩算法）而我们用 JSONL**——两种选择的取舍
 
 ## EvalLog 完整 Schema
 

@@ -1,7 +1,7 @@
 ---
 title: 附录 B　多 Agent 评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/HkLswsOVoi1QnDkCA7dcwjbVnDd"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:35Z"
 ---
 
 ## 附录定位
@@ -138,7 +138,7 @@ vs ShopAgent single-agent on same 30 samples:
   task_completion:         24/30 (80%)
 ```
 
-**单 agent 在简单 30 条上反而比 multi-agent 强**。这是真实工程现象——multi-agent 引入 handoff 损耗。
+**单 agent 在简单 30 条上反而比 multi-agent 强**。这是真实工程现象——multi-agent 引入 handoff（一个 agent 把任务"交接"给另一个 agent，过程中要复述上下文、协调状态、商量谁负责，每次 handoff 都是潜在错点）损耗。
 
 ## 什么时候 Multi-Agent 才胜出
 

@@ -1,7 +1,7 @@
 ---
 title: 第 17 章　评测集扩充到 200 条
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/IVoMwx0ayiQdIYkyBZ8cbwBYnBd"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:27Z"
 ---
 
 ## 本章你会拿到什么
@@ -215,7 +215,7 @@ export function lintDataset(samples: Sample[]): LintReport {
 133 条 lint 出 7 条违规：
 
 - 3 条用了真手机号（合成时 LLM 用 `13800138000` 这种 internet meme 占位）
-- 2 条 expected_tool_calls 引用了未定义的工具（"refund_partial" 等 hallucination）
+- 2 条 expected_tool_calls 引用了未定义的工具（"refund_partial" 等 hallucination：LLM 输出里"编造一个不存在的事实/接口/工具"，是 RAG 和工具调用场景最常见的失败模式）
 - 1 条 user_input 含 emoji
 - 1 条 user_input 长度超 200 字
 

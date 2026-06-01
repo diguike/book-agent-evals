@@ -1,7 +1,7 @@
 ---
 title: 第 12 章　工具调用评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Ck8Bwa4JYiijcxkdY3YcDwGMnah"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:20Z"
 ---
 
 ## 本章你会拿到什么
@@ -66,7 +66,7 @@ EvalKit 的 `toolSchemaScorer`：
 
 ```ts
 // examples/evalkit/src/scorer/tool_use/schema_match.ts
-import Ajv from 'ajv';
+import Ajv from 'ajv';  // [Ajv](https://github.com/ajv-validator/ajv)：Node 生态事实标准的 JSON Schema 校验库
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 

@@ -1,14 +1,14 @@
 ---
 title: 第 20 章　Dashboard 与生产部署
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UmEbwokc5iwnlvkN5CJc0zahnMc"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:32Z"
 ---
 
 ## 本章你会拿到什么
 
 CLI 评测够日常，但**多人协作 + 长期趋势可视化**需要 dashboard。这一章你会：
 
-1. **拿到 EvalKit Dashboard**：Next.js + SQLite + Tailwind，约 800 行 TS，本地启动即用
+1. **拿到 EvalKit Dashboard**：[Next.js](https://nextjs.org)（Vercel 出品的 React 全栈框架）+ [SQLite](https://www.sqlite.org)（嵌入式单文件 SQL 数据库，无需 server）+ [Tailwind](https://tailwindcss.com)（utility-first CSS 框架），约 800 行 TS，本地启动即用
 2. **看到完整的可视化套件**：run 列表 / 趋势图 / 跨 run diff / failure mode 分布 / cost 跟踪
 3. **学会什么时候该从 EvalKit 迁移到 langfuse / inspect_ai / 自研平台**——迁移路径明确
 4. **理解 EvalKit 的局限**：它不是一切，知道什么时候放下它
@@ -107,7 +107,7 @@ dashboard 启动时跑一次全量 sync，之后增量 sync（监听 runs/ 目�
 /datasets            评测集列表 + 版本对比
 ```
 
-6 个核心页面。每个页面用 Next.js 14 App Router + shadcn/ui 组件库构建。
+6 个核心页面。每个页面用 Next.js 14 App Router + [shadcn/ui](https://ui.shadcn.com)（基于 Radix + Tailwind 的 React 组件库，组件代码直接复制到项目里而不是 npm install）组件库构建。
 
 ## Runs 列表页
 
@@ -284,9 +284,9 @@ EvalKit Dashboard 设计为"中小规模"——预期场景：
 
 | 痛点 | 触发条件 | 迁移目标 |
 |---|---|---|
-| Sample 数太多，SQLite 查询慢 | > 100 万条 | PostgreSQL + ClickHouse |
+| Sample 数太多，SQLite 查询慢 | > 100 万条 | [PostgreSQL](https://www.postgresql.org)（业界事实标准的开源关系数据库）+ [ClickHouse](https://clickhouse.com)（Yandex 开源的列式 OLAP 数据库，分析查询极快） |
 | 多团队并发标注 | > 5 个 annotators | argilla / Label Studio |
-| 跟 production tracing 系统打通 | 需要 trace 关联 | langfuse / Arize Phoenix |
+| 跟 production tracing 系统打通 | 需要 trace 关联 | langfuse / [Arize Phoenix](https://github.com/Arize-ai/phoenix)（Arize AI 出品的开源 LLM observability + 评测平台，本地可起） |
 | 需要权限控制 / 审计 | 受合规要求 | 自研平台 |
 
 ## 从 EvalKit 迁移到 langfuse
@@ -324,7 +324,7 @@ EvalKit 提供导出脚本：
 evalkit export-langfuse runs/<run-id> --base-url http://localhost:3000 --api-key xxx
 ```
 
-把 EvalKit JSONL 转换成 langfuse traces + datasets + scores。**EvalKit 的 schema 设计就是为了能无缝映射到 langfuse 的 OpenTelemetry 格式**（第 7 章 EvalLog schema 在这一点做了对齐）。
+把 EvalKit JSONL 转换成 langfuse traces + datasets + scores。**EvalKit 的 schema 设计就是为了能无缝映射到 langfuse 的 [OpenTelemetry](https://opentelemetry.io)（CNCF 开源的可观测性标准，定义了 traces/metrics/logs 的统一数据格式和 SDK，业内主流 observability 后端都兼容）格式**（第 7 章 EvalLog schema 在这一点做了对齐）。
 
 **数据格式映射表**（EvalKit → langfuse）：
 

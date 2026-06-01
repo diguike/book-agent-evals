@@ -1,7 +1,7 @@
 ---
 title: 第 8 章　RAG 子模块评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/ULUlwhSQ4iiSGYkpnhBcftwRnXd"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:19Z"
 ---
 
 ## 本章你会拿到什么
@@ -128,7 +128,7 @@ export function contextRecall(opts: { field?: string; groundTruthField?: string 
 }
 ```
 
-也不需要 LLM。Precision + Recall 是经典的 IR 指标，但对 RAG 来说**仅看这两项远远不够**——因为最终用户看的是回答，不是文档列表。下面两个 LLM-based 指标才是 generation 层质量。
+也不需要 LLM。Precision + Recall 是经典的 IR（Information Retrieval，信息检索）领域指标，但对 RAG 来说**仅看这两项远远不够**——因为最终用户看的是回答，不是文档列表。下面两个 LLM-based 指标才是 generation 层质量。
 
 ### Faithfulness
 
@@ -278,8 +278,8 @@ const ragEval = defineTask({
 RAG 评测的作用就是把这类静默失败变成可测量的数字——你看到 0.10，至少知道下一步要修 retrieval。生产修法不止一种：
 
 1. **关键词抽取**：先用 LLM 提关键词（"羽绒服"+"清洗"）再做 LIKE / 倒排
-2. **embedding 召回**：用 text-embedding-3 / bge-large-zh 做语义召回（推荐）
-3. **BM25 倒排**：传统 IR 方案
+2. **embedding 召回**：用 text-embedding-3 / [bge-large-zh](https://huggingface.co/BAAI/bge-large-zh)（智源研究院 BAAI 开源的中文 embedding 模型，社区事实标准）做语义召回（推荐）
+3. **[BM25](https://en.wikipedia.org/wiki/Okapi_BM25) 倒排**：传统 IR 方案（基于词频 + 逆文档频率的相关性打分函数，搜索引擎里用了几十年）
 
 修完 retrieval（实测加上关键词抽取这一步），同样 50 条样本配 LLM judge（faithfulness / answer_relevancy 需要 judge router 配好）能跑到大致：
 
@@ -306,7 +306,7 @@ Recall 81% 怎么提？常见手段：
 |---|---|---|
 | top-k 从 3 → 5 | recall +5-10% | 0（一行配置） |
 | 加 query rewriting（让 LLM 改写 query） | recall +5-15% | 中（加一步 LLM 调用） |
-| 加 reranker（cross-encoder） | precision +10-20% | 中（接 BGE-reranker） |
+| 加 reranker（cross-encoder：把 query 和文档同时塞进 transformer 计算相关性，比单独 embedding 余弦更准但更慢） | precision +10-20% | 中（接 [BGE-reranker](https://huggingface.co/BAAI/bge-reranker-base)） |
 | 换 embedding 模型（small → large） | recall +3-8% | 低（费用增加 10x） |
 | 切分粒度调小（chunk size） | recall +5% / precision -5% | 低 |
 

@@ -1,7 +1,7 @@
 ---
 title: 第 4 章　构建评测集种子（60 条 L1）
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/FZlBwhKvvioyDOkj2RFcy1qTnYs"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:12Z"
 ---
 
 ## 本章你会拿到什么
@@ -239,7 +239,7 @@ const SYNTH_PROMPT = `你是电商客服评测数据集设计师。根据下面�
 
 ```ts
 // examples/evalkit/src/synth/seed_to_candidates.ts
-import Anthropic from '@anthropic-ai/sdk';
+import Anthropic from '@anthropic-ai/sdk';  // 官方 [Anthropic TS SDK](https://github.com/anthropics/anthropic-sdk-typescript)
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const anthropic = new Anthropic();
@@ -458,7 +458,7 @@ git tag dataset-l1-v1.0.0
 |---|---|
 | 三维度 Features × Scenarios × Personas | Hamel field guide / Maven 课 Lesson 2 |
 | 种子 + LLM 扩散 | τ-bench 内部数据集造法（论文 Section 4.2） |
-| embedding 去重 | argilla 的 deduplication 功能 |
+| embedding 去重 | [argilla](https://github.com/argilla-io/argilla)（开源 LLM 数据标注 / 数据集管理平台）的 deduplication 功能 |
 | 自动 review 打分 | Promptfoo 的 `assert: llm-rubric` |
 | 数据集版本化 + Changelog | Hamel evals-faq.md "Version your evals" |
 

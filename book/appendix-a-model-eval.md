@@ -1,7 +1,7 @@
 ---
 title: 附录 A　模型评测进阶
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/CvhVw9qKRiXKhek7ZISc5YvTnHd"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:33Z"
 ---
 
 ## 附录定位
@@ -159,7 +159,7 @@ lm_eval --model openai-completions \
         --output_path runs/gpt4o-base
 ```
 
-跑出来同样格式的报告。**OpenCompass 更适合中文 benchmark（C-Eval / CMMLU / SuperCLUE / FlagEval）**，lm-eval 更适合海外 benchmark（MMLU / HellaSwag / TruthfulQA）。
+跑出来同样格式的报告。**OpenCompass 更适合中文 benchmark（C-Eval / CMMLU / SuperCLUE / [FlagEval](https://github.com/FlagOpen/FlagEval)（智源研究院的多模态评测平台）），lm-eval 更适合海外 benchmark**（MMLU / [HellaSwag](https://rowanzellers.com/hellaswag/)（4 选 1 常识推理基准）/ [TruthfulQA](https://github.com/sylinrl/TruthfulQA)（测模型是否会复述常见错误信念））。
 
 两者**互补**：
 
@@ -250,7 +250,7 @@ ShopAgent 客服场景对"用户感觉"敏感（语气、礼貌、自然），Ar
 
 ## 微调模型怎么评测
 
-如果你给 ShopAgent 微调了一个 LoRA / DPO 版本（"shopagent-tuned"），怎么知道有没有改善？
+如果你给 ShopAgent 微调（fine-tune：在已预训练好的基座模型上用少量任务数据继续训练，让模型适配某个具体任务/领域）了一个 [LoRA](https://arxiv.org/abs/2106.09685)（Low-Rank Adaptation，参数高效微调方法之一，只训练插入到原模型层之间的低秩矩阵，可训练参数减少 99%+）/ DPO 版本（"shopagent-tuned"），怎么知道有没有改善？
 
 **对照评测**：
 
@@ -258,7 +258,7 @@ ShopAgent 客服场景对"用户感觉"敏感（语气、礼貌、自然），Ar
 2. tuned model 跑同样全集 → candidate
 3. CI 守门一样用 two-proportion z-test
 
-**关键陷阱**：微调过程的训练数据**绝对不能跟评测集重叠**。否则 candidate 看起来涨 10 个点，实际是 contamination。
+**关键陷阱**：微调过程的训练数据**绝对不能跟评测集重叠**。否则 candidate 看起来涨 10 个点，实际是 contamination（数据污染：评测集泄漏进了训练集，模型在评测里其实是"背答案"——是基准评测里最常见也最危险的失真来源）。
 
 防御方法：
 

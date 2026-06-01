@@ -1,7 +1,7 @@
 ---
 title: 第 18 章　数据飞轮：线上日志反哺评测集
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/ZXRIwwL2jirTzRkPDT5cXmPbnre"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:28Z"
 ---
 
 ## 本章你会拿到什么
@@ -185,7 +185,7 @@ embedding 相似度对比 v2.1.0 全集，如果跟已有样本相似度 > 0.85 
 
 ### 门 3：是否包含 PII
 
-最严格的一道。线上日志里**几乎肯定有真实 PII**（订单号、手机号、地址）。所有入集样本必须经过 PII 替换：
+最严格的一道。线上日志里**几乎肯定有真实 PII**（Personally Identifiable Information，个人身份信息——能识别到具体个人的数据：姓名、手机号、身份证号、收货地址、邮箱等。中国《个人信息保护法》、欧盟 GDPR 都对 PII 处理有严格要求）。所有入集样本必须经过 PII 替换：
 
 ```ts
 // examples/evalkit/src/flywheel/pii_scrubber.ts
@@ -293,7 +293,7 @@ Date: 2026-05-25 to 2026-05-31
 
 ## Annotation Drift：注意点
 
-数据飞轮跑久了会遇到 **annotation drift**——同一类 case 不同时间标的标签不一致。例：
+数据飞轮跑久了会遇到 **annotation drift**（标注漂移：同一类 case 在不同时间被打上不一致的标签，原因可能是标注员换人、标注 guideline 模糊、对边界 case 理解变化）——同一类 case 不同时间标的标签不一致。例：
 
 - 2026-05 标 "policy_4 confirmation" 时严格（必须问"吗？"）
 - 2026-08 标 policy_4 时宽松（"请确认"也算）
@@ -303,7 +303,7 @@ Date: 2026-05-25 to 2026-05-31
 防御方法：
 
 1. **标注 guideline 写成文档**：每个 failure mode 的判定标准固化在文档，定期 review
-2. **golden set 不变**：保留一份 100 条 "golden samples"，标注从不修改。每次新数据入集前**先标 golden set**，跟历史结果对比，drift > 5% 报警
+2. **golden set 不变**：保留一份 100 条 "golden samples"（金标集：评测领域里被标注最严格、长期不动、用来锚定模型/scorer/judge 一致性基线的小型数据集）—— 标注从不修改。每次新数据入集前**先标 golden set**，跟历史结果对比，drift > 5% 报警
 3. **多 reviewer 抽样**：每月找另一个人 review 50 条新入集样本，跟主 reviewer 计算 Cohen's Kappa
 
 Hamel 的 Maven 课 Lesson 5 详细讲了 annotation drift 的应对（"Specification calibration"）。

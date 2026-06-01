@@ -1,14 +1,14 @@
 ---
 title: 第 19 章　CI 集成与回归守门
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Tdj1wOZGuiETqRk1avdcO6zUnXe"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:30Z"
 ---
 
 ## 本章你会拿到什么
 
 到第 18 章为止，所有评测都是手动跑的——你改 prompt 后想起来跑一下，对比 diff。但生产工程必须**自动化** + **守门**。这一章你会：
 
-1. **拿到 GitHub Actions 配置**：PR 提交时自动跑评测，结果发评论
+1. **拿到 [GitHub Actions](https://docs.github.com/en/actions) 配置**（GitHub 内建的 CI/CD 平台，通过 `.github/workflows/*.yml` 描述触发条件和执行步骤）：PR 提交时自动跑评测，结果发评论
 2. **学会统计显著性的回归守门**：何时算"真正回归"vs 何时是 noise
 3. **掌握评测 cost 控制**：matrix 评测 / sampled trial / 选择性 pass^k
 4. **看到真实的"评测把不该上线的 PR 挡住"** 演示

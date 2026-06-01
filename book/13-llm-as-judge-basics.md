@@ -1,7 +1,7 @@
 ---
 title: 第 13 章　搭建 LLM-as-Judge 评判器
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/AzuNweomEiDL1Ck49Pic2v1Wnyf"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T04:40:22Z"
 ---
 
 ## 本章你会拿到什么
@@ -238,7 +238,7 @@ v2 TPR = 11/11 = 100%
 v2 TNR = 7/8 = 87.5%
 ```
 
-TPR/TNR 都 > 80%，过门槛。这是 judge v2 定稿——**用 train 集做 few-shot，用 dev 集迭代，但不在 dev 上数字优化**（否则会过拟合 dev）。
+TPR（True Positive Rate，真阳性率：真实通过样本里被 judge 判通过的比例）/ TNR（True Negative Rate，真阴性率：真实不通过样本里被 judge 判不通过的比例）都 > 80%，过门槛。这是 judge v2 定稿——**用 train 集做 few-shot，用 dev 集迭代，但不在 dev 上数字优化**（否则会过拟合 dev）。
 
 ## 在 test 集上确认
 
@@ -386,7 +386,7 @@ inspect_ai 的 `model_graded_qa` 和 `model_graded_fact` 是同思路的 judge s
 
 ## 本章要点回顾
 
-- **Hamel 7 步法**：(1) 定义评判维度 (2) 写 rubric (3) binary pass/fail (4) few-shot (5) chain-of-thought (6) 测一致性 (7) 迭代
+- **Hamel 7 步法**：(1) 定义评判维度 (2) 写 rubric（评分量表，给 judge 提供明确的"什么算通过"判定标准）(3) binary pass/fail (4) few-shot（在 prompt 里给几个示例引导 judge）(5) chain-of-thought（CoT，让模型先输出推理过程再给结论，论文 [arXiv:2201.11903](https://arxiv.org/abs/2201.11903)）(6) 测一致性 (7) 迭代
 - **binary 优于 1-5 分**：分数级评判 judge 难一致，binary 更稳。需要细化用多个 binary 维度而不是单个 5 分制
 - **rubric 必备 3 个部分**：评判对象、通过标准、典型不通过例子（few-shot）
 - **policy 4 judge 案例**：raw pass rate 73.7% → 加 few-shot 94.7% → 跟人工 alignment 提升 21pp
