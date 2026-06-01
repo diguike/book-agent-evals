@@ -1,7 +1,7 @@
 ---
 title: 第 2 章　跑通第一个评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Ni2DwNPdBik0Jaks3pWczK6lnFh"
-last_synced: "2026-06-01T09:52:04Z"
+last_synced: "2026-06-01T09:58:10Z"
 ---
 
 ## 本章你会拿到什么
@@ -55,11 +55,13 @@ npm run doctor    # 检查 Node 版本、API key、workspace 配置
 
 如果有 ✗，跟着提示修就行——doctor 给的指引是具体的（不是"自己排查环境问题"那种）。
 
-### 第一次跑：用 mock-llm-server 免 API key 上手（推荐）
+### 第一次跑：用 mock-llm-server 免 API key 上手（如果你已装 Claude Code）
 
-读者第一次跟着书走，最容易卡的不是评测代码，是 `.env` —— OpenAI key 要绑信用卡、国产模型要审批。**仓库提供了一个 `examples/mock-llm-server`**，把 Claude Code Max 配额包装成 OpenAI 兼容协议（POST `/v1/chat/completions`），评测脚本完全不用改、不用真 key，本章和后续大多数章节都能跑。本书 demo 里贴的 sonnet / haiku 数字就是从这个 mock-server 上跑出来的，读者用同样配置能复现。
+读者第一次跟着书走，最容易卡的不是评测代码，是 `.env` —— OpenAI key 要绑信用卡、国产模型要审批。**假如你本地已装了 [Claude Code](https://claude.com/claude-code) 并完成登录**（任何订阅档位都行，免费档也能用，跑得慢一点而已），可以直接用仓库里的 `examples/mock-llm-server` —— 它把本地 Claude Code 的 `claude -p` 命令包装成 OpenAI 兼容协议（POST `/v1/chat/completions`），评测脚本完全不用改、不用真 key 就跑得起来。本书 demo 里贴的 sonnet / haiku 数字就是从这个 mock-server 上跑出来的，读者用同样配置能复现。
 
-> 它**不是生产级 proxy**：内部用 `claude -p` 子进程，每次调用 3-15 秒延迟，跑全集 200 条要十几分钟。教学场景够用，生产请直接对接 OpenAI / Anthropic / DeepSeek 原生 API。
+> 它**不是生产级 proxy**：内部 spawn `claude -p` 子进程，每次调用 3-15 秒延迟，跑全集 200 条要十几分钟。教学场景够用，生产请直接对接 OpenAI / Anthropic / DeepSeek 原生 API。
+>
+> 如果你没装 Claude Code，跳过这一节，往下用真 OpenAI / Anthropic / DeepSeek key 也一样。
 
 三步上手：
 
