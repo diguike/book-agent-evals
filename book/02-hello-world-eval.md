@@ -1,7 +1,7 @@
 ---
 title: 第 2 章　跑通第一个评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Ni2DwNPdBik0Jaks3pWczK6lnFh"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-01T09:52:04Z"
 ---
 
 ## 本章你会拿到什么
@@ -46,13 +46,42 @@ npm run doctor    # 检查 Node 版本、API key、workspace 配置
 `doctor` 跑通后会输出类似：
 
 ```
-✓ Node v20.11.0 (>= 20)
+✓ Node v22+
 ✓ npm workspaces 配置 OK
-✓ .env 已配置 OPENAI_API_KEY
+✓ @inferloop/evalkit / @inferloop/shopagent 包已识别
 ✓ ShopAgent DB 已 seed — examples/shopagent/data/shopagent.db 存在（5000 订单 / 500 用户 / 200 SKU / 100 FAQ）
+✓ .env 已配置 OPENAI_API_KEY
 ```
 
 如果有 ✗，跟着提示修就行——doctor 给的指引是具体的（不是"自己排查环境问题"那种）。
+
+### 第一次跑：用 mock-llm-server 免 API key 上手（推荐）
+
+读者第一次跟着书走，最容易卡的不是评测代码，是 `.env` —— OpenAI key 要绑信用卡、国产模型要审批。**仓库提供了一个 `examples/mock-llm-server`**，把 Claude Code Max 配额包装成 OpenAI 兼容协议（POST `/v1/chat/completions`），评测脚本完全不用改、不用真 key，本章和后续大多数章节都能跑。本书 demo 里贴的 sonnet / haiku 数字就是从这个 mock-server 上跑出来的，读者用同样配置能复现。
+
+> 它**不是生产级 proxy**：内部用 `claude -p` 子进程，每次调用 3-15 秒延迟，跑全集 200 条要十几分钟。教学场景够用，生产请直接对接 OpenAI / Anthropic / DeepSeek 原生 API。
+
+三步上手：
+
+```bash
+# 1. 起 mock-server（保持这个终端窗口开着，它要监听 :3030）
+cd examples/mock-llm-server
+npm run start
+# 看到 "[mock-llm-server] listening on http://localhost:3030" 即就绪
+
+# 2. 另开一个终端，复制 .env 模板并填 mock 配置
+cd /path/to/book-agent-evals
+cp .env.example .env
+# 编辑 .env，填以下三行：
+#   OPENAI_API_KEY=mock-any-key-works     # mock-server 不校验，填啥都行
+#   OPENAI_BASE_URL=http://localhost:3030/v1
+#   MODEL=gpt-4o                          # mock-server 内部固定走 Claude Sonnet，model 名只是占位
+
+# 3. 重跑 doctor 确认
+npm run doctor    # .env 那一项应该变 ✓
+```
+
+通过后直接进到下面的"跑起来"小节。后面章节如果用真 OpenAI / Anthropic key（比如想复现"换模型对比 cost"那一类场景），把 `.env` 里 `OPENAI_BASE_URL` 删掉、`OPENAI_API_KEY` 换成真 key 即可，不用动评测代码。
 
 ### 看一眼 L1 评测集长什么样
 
