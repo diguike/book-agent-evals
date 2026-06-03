@@ -25,7 +25,7 @@ function checkNode(): Check {
     name: 'Node 版本 ≥ 22',
     ok: major >= 22,
     detail: `当前 v${versionStr}`,
-    fix: '安装 Node 22 或更高版本（shopagent 依赖 node:sqlite，22.5+ 起支持）：https://nodejs.org/，或用 nvm install 22 && nvm use 22',
+    fix: '安装 Node 22 或更高版本（shopagent 依赖 node:sqlite，22.5+ 起支持）：https://nodejs.org/ 直接装最新 LTS；或用 nvm：`nvm install 22 && nvm use 22 && nvm alias default 22`（最后一步把 22 设为默认，避免每次 npm 钩子触发 nvm 时回退到 "default -> N/A"）',
   };
 }
 
@@ -179,6 +179,14 @@ if (allOk) {
   console.log('\n[doctor] 全部通过，可以开始跑评测了。\n');
   process.exit(0);
 } else {
+  // Node 版本是一切其他检查的前置条件——版本不达标时，DB seed、依赖装载、tsx 启动等都会顺势报错。
+  // 单独打一行 hint，免得读者按 DB seed 那条 ✗ 的修复指引去跑 npm run seed，结果撞到 node:sqlite 报错才回来排查根因。
+  const nodeCheck = checks[0];
+  if (!nodeCheck.ok) {
+    console.log('\n[doctor] ⚠️  Node 版本未达标——请先升级 Node 22+ 再重跑 doctor。');
+    console.log('         上面其他 ✗（DB seed / 依赖 / 包识别 等）大概率是 Node 版本不达标的级联效应，');
+    console.log('         升级后多半一起消失，没消失的再单独修。');
+  }
   console.log('\n[doctor] 有检查未通过，按上面的修复指引处理后重试。\n');
   process.exit(1);
 }
