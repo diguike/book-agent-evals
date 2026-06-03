@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "eval": "tsx src/index.ts",
+    "eval": "tsx --env-file-if-exists=../../.env src/index.ts",
     "clean": "rm -rf dist runs"
   },
   "dependencies": {

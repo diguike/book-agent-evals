@@ -1,7 +1,7 @@
 ---
 title: 第 2 章　跑通第一个评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Ni2DwNPdBik0Jaks3pWczK6lnFh"
-last_synced: "2026-06-01T09:58:10Z"
+last_synced: "2026-06-03T03:54:52Z"
 ---
 
 ## 本章你会拿到什么
@@ -84,6 +84,8 @@ npm run doctor    # .env 那一项应该变 ✓
 ```
 
 通过后直接进到下面的"跑起来"小节。后面章节如果用真 OpenAI / Anthropic key（比如想复现"换模型对比 cost"那一类场景），把 `.env` 里 `OPENAI_BASE_URL` 删掉、`OPENAI_API_KEY` 换成真 key 即可，不用动评测代码。
+
+> **`.env` 只在仓库根填一次就够**。所有章节 example 的 `eval` script 都用 `tsx --env-file-if-exists=../../.env src/index.ts` 启动，会自动读根目录的 `.env`。读者不需要在每个章节再创建一份 `.env`。如果你不想用文件、想直接 `OPENAI_API_KEY=... MODEL=... npm run eval` 这样在命令行临时传也行，shell 环境变量优先级更高，会覆盖 `.env` 里的同名项。
 
 ### 看一眼 L1 评测集长什么样
 
