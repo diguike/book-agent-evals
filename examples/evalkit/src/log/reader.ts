@@ -1,5 +1,5 @@
 // EvalLog 读取 —— ch07 引入；view / diff / list CLI 用
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import {
   LogEntrySchema,
@@ -54,9 +54,10 @@ export interface LogFileInfo {
   accuracy?: number;
 }
 
-/** 列出目录下所有 .jsonl 日志，按 mtime 倒序 */
+/** 列出目录下所有 .jsonl 日志，按 mtime 倒序。目录不存在时返回空数组，不抛异常。 */
 export function listLogs(dir: string): LogFileInfo[] {
   const abs = resolve(dir);
+  if (!existsSync(abs)) return [];
   const out: LogFileInfo[] = [];
   for (const name of readdirSync(abs)) {
     if (!name.endsWith('.jsonl')) continue;
