@@ -19,7 +19,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist *.tsbuildinfo data",
-    "dev": "tsx src/cli.ts",
+    "dev": "tsx --env-file-if-exists=../../.env src/cli.ts",
     "seed": "tsx src/db/seed.ts"
   },
   "dependencies": {

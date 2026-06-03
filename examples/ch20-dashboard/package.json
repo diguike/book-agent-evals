@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "eval": "tsx --env-file-if-exists=../../.env src/eval.ts",
+    "dashboard": "tsx --env-file-if-exists=../../.env src/eval.ts",
     "clean": "rm -rf dist runs"
   },
   "dependencies": {

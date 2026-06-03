@@ -65,7 +65,7 @@
     }
   },
   "bin": {
-    "evalkit": "./dist/cli/index.js"
+    "evalkit": "./bin/evalkit.js"
   },
   "scripts": {
     "build": "tsc",
