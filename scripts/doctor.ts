@@ -153,11 +153,28 @@ function checkShopAgentDb(): Check {
   };
 }
 
+// 8. workspace 包已 build —— evalkit / shopagent 是 TS 包，main 指向 dist/index.js，没 build 则 import 报 ERR_MODULE_NOT_FOUND
+function checkWorkspaceBuild(): Check {
+  const evalkitDist = resolve(repoRoot, 'examples/evalkit/dist/index.js');
+  const shopagentDist = resolve(repoRoot, 'examples/shopagent/dist/index.js');
+  const missing: string[] = [];
+  if (!existsSync(evalkitDist)) missing.push('@inferloop/evalkit');
+  if (!existsSync(shopagentDist)) missing.push('@inferloop/shopagent');
+  const ok = missing.length === 0;
+  return {
+    name: 'workspace 包已 build',
+    ok,
+    detail: ok ? 'evalkit / shopagent 的 dist/ 都已生成' : `${missing.join(' / ')} 缺少 dist/，import 时会报 ERR_MODULE_NOT_FOUND`,
+    fix: '在仓库根跑 `npm run build`（等价 `npm run build -ws --if-present`），首次拉仓库后必跑一次；之后改了 evalkit/shopagent 源码也要重跑',
+  };
+}
+
 checks.push(checkNode());
 checks.push(checkRootPackageJson());
 checks.push(checkNodeModules());
 checks.push(checkEvalKitWorkspace());
 checks.push(checkShopAgentWorkspace());
+checks.push(checkWorkspaceBuild());
 checks.push(checkShopAgentDb());
 checks.push(checkEnvFile());
 
