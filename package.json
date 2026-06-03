@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "doctor": "tsx scripts/doctor.ts",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build:libs && npm run build --workspaces --if-present",
+    "build:libs": "npm run build -w @inferloop/shopagent -w @inferloop/shopagent-extended -w @inferloop/evalkit -w @inferloop/mock-llm-server",
     "build:evalkit": "npm run build -w @inferloop/evalkit",
     "build:shopagent": "npm run build -w @inferloop/shopagent",
     "test": "npm run test --workspaces --if-present",
