@@ -1,7 +1,7 @@
 ---
 title: 第 13 章　搭建 LLM-as-Judge 评判器
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/AzuNweomEiDL1Ck49Pic2v1Wnyf"
-last_synced: "2026-06-01T04:40:22Z"
+last_synced: "2026-06-03T04:15:08Z"
 ---
 
 ## 本章你会拿到什么
@@ -13,7 +13,7 @@ last_synced: "2026-06-01T04:40:22Z"
 3. **学到 binary pass/fail 为什么必须替代 1-5 量表**（Hamel 反复强调，行业共识）
 4. **跑通第一个 LLM-as-Judge 评测**：policy 4 二次确认 scorer
 
-代码增量：`examples/evalkit/src/scorer/judge/` 子目录。
+代码增量：通用 judge 抽象在 `examples/evalkit/src/scorer/judge/`（lib 层：`model_graded.ts` 通用 LLM-as-Judge scorer，`pairwise.ts` 留给第 14 章 pairwise judge）；本章 policy 4 的具体实现在 `examples/ch13-judge/src/eval.ts`（章节 example，把 lib 的 `modelGraded` scorer 与 ShopAgent 特定的 rubric prompt 拼起来）。
 
 ## 为什么需要 LLM-as-Judge
 
@@ -283,7 +283,10 @@ LLM 给 1-5 分时，标准实质上**模糊**。今天 agent A 给 3，明天 a
 ## Policy 4 Judge Scorer 实现
 
 ```ts
-// examples/evalkit/src/scorer/judge/policy_4.ts
+// examples/ch13-judge/src/eval.ts —— policy 4 judge scorer
+// 注：本书把"通用 model_graded judge"放在 lib（`evalkit/src/scorer/judge/model_graded.ts`），
+//     把"特定 policy 4 的 prompt 与判定逻辑"放在 ch13 章节 example。
+//     原因：policy 是 ShopAgent 业务相关的，不进 lib 层。读者照抄到自家场景换一份 prompt 即可。
 const POLICY_4_JUDGE = `你是评测助手...（v2 prompt 略）`;
 
 export function policy4Confirmation(judgeModel = 'openai/gpt-4o-mini'): Scorer {

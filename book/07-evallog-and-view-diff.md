@@ -1,7 +1,7 @@
 ---
 title: 第 7 章　EvalLog 设计与跨次结果对比
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/C301wDsQTizFaskfEmucruN8nxf"
-last_synced: "2026-06-01T04:40:17Z"
+last_synced: "2026-06-03T04:15:05Z"
 ---
 
 ## 本章你会拿到什么
@@ -123,75 +123,81 @@ export type EvalSample = z.infer<typeof EvalSampleSchema>;
 
 ## 文件结构
 
-每次评测生成一个目录：
+每次评测生成一个 **单文件三段式 JSONL**：
 
 ```
 runs/
-├── 2026-05-27T10-12-34Z_l1-final-60_gpt-4o/
-│   ├── meta.json              # EvalSpec + EvalPlan + EvalStats + EvalResults
-│   └── samples.jsonl          # 每行一个 EvalSample
+├── 2026-05-27T10-12-34Z_l1-final-60_gpt-4o.jsonl
+├── 2026-05-27T10-15-22Z_l1-final-60_gpt-4o-mini.jsonl
+└── 2026-05-27T10-23-11Z_l1-final-60_anthropic-claude-sonnet-4-5.jsonl
 ```
 
-`meta.json` 小（< 5KB），写在评测开始和结束分两次写（开始时只有 spec + plan，结束补 stats + results）。`samples.jsonl` 流式写——每跑完一个 sample 立刻 `appendFileSync` 一行。
+每个 `.jsonl` 文件内部是三段：
 
-**为什么分开**：
-- 列 run 时只读 `meta.json`，不用解析海量 samples
-- 部分中断的 run 也能恢复——`samples.jsonl` 已经有的 sample 直接跳过
-- `samples.jsonl` 支持 `grep` / `jq` 直接处理
-
-## Run 目录命名约定
-
-格式：`<ISO timestamp Z>_<task-name>_<model-name>`，例：
-
-```
-2026-05-27T10-12-34Z_l1-final-60_gpt-4o
-2026-05-27T10-15-22Z_l1-final-60_gpt-4o-mini
-2026-05-27T10-23-11Z_l1-final-60_anthropic-claude-sonnet-4-5
+```jsonc
+{"type":"header","taskName":"...","model":"...","datasetSize":60,"startedAt":"..."}
+{"type":"sample","sampleId":"L1-001","scores":[...],"timingMs":1284,...}
+{"type":"sample","sampleId":"L1-002",...}
+...
+{"type":"footer","completedAt":"...","metrics":{"accuracy":0.5,...}}
 ```
 
-ISO 时间排序天然按时间顺序，task-name + model 让目录列表一眼能看出来"这是什么评测"。**禁止用纯 hash 命名**——hash 看不出来是哪个 task / 哪个模型，团队多人评测会很乱。
+- **header** 一行：task / model / 数据集大小 / 开始时间，评测启动时写
+- **sample** N 行：每跑完一条立刻 `appendFileSync` 一行，挂了不丢已跑数据
+- **footer** 一行：评测结束时写汇总（accuracy / stderr / pass^k 等）
+
+**为什么单文件三段式**：
+- 整份 run 就是一个 jsonl 文件，方便 `cp` / `mv` / `git add` 操作
+- `grep` / `jq` / `head` / `tail` 全适用：`head -1 xxx.jsonl | jq` 一行拿 header，`tail -1 xxx.jsonl | jq` 一行拿 footer
+- 列 run 时只读 header（第一行），不用解析海量 samples
+- 部分中断的 run 也能恢复——已经写到的 sample 行按 sampleId 跳过即可
+
+> **关于未来扩展**：双文件结构（`<run-name>/meta.json` + `<run-name>/samples.jsonl`）是更工程化的演化方向——meta 小、能秒读；samples 大、流式处理友好。等 EvalKit 跑大数据集（10000+ samples，单文件超过 1GB）时切到双文件比较自然。本书 v1 主线坚持单文件，因为教学 / 中小规模评测平台（200-2000 条样本）单文件足够，工具链最简单。
+
+## Run 文件命名约定
+
+格式：`<ISO timestamp Z>_<task-name>_<model-name>.jsonl`，例：
+
+```
+2026-05-27T10-12-34Z_l1-final-60_gpt-4o.jsonl
+2026-05-27T10-15-22Z_l1-final-60_gpt-4o-mini.jsonl
+2026-05-27T10-23-11Z_l1-final-60_anthropic-claude-sonnet-4-5.jsonl
+```
+
+ISO 时间排序天然按时间顺序，task-name + model 让文件列表一眼能看出来"这是什么评测"。**禁止用纯 hash 命名**——hash 看不出来是哪个 task / 哪个模型，团队多人评测会很乱。
 
 模型名里的 `/` 替换成 `-`（`openai/gpt-4o` → `openai-gpt-4o`），避免文件名跨平台问题。
 
 ## JsonlRecorder：流式写盘
 
 ```ts
-// examples/evalkit/src/log/jsonl_recorder.ts
+// examples/evalkit/src/log/jsonl_recorder.ts —— 简化展示，完整版含 zod 校验和 dirname 处理
 import { writeFileSync, appendFileSync, mkdirSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 
 export class JsonlRecorder {
-  readonly runDir: string;
-  readonly metaPath: string;
-  readonly samplesPath: string;
-  private spec: EvalSpec;
+  readonly logPath: string;
 
   constructor(rootDir: string, taskName: string, model: string) {
-    const ts = new Date().toISOString().replace(/[:.]/g, '-').replace('Z', 'Z');
+    const ts = new Date().toISOString().replace(/[:.]/g, '-');
     const safeModel = model.replace(/\//g, '-');
-    this.runDir = resolve(rootDir, `${ts}_${taskName}_${safeModel}`);
-    mkdirSync(this.runDir, { recursive: true });
-    this.metaPath = resolve(this.runDir, 'meta.json');
-    this.samplesPath = resolve(this.runDir, 'samples.jsonl');
+    this.logPath = resolve(rootDir, `${ts}_${taskName}_${safeModel}.jsonl`);
+    mkdirSync(dirname(this.logPath), { recursive: true });
   }
 
-  async writeHeader(spec: EvalSpec, plan: EvalPlan, startedAt: string) {
-    this.spec = spec;
-    const meta = { formatVersion: 1, eval: spec, plan, stats: { startedAt } };
-    writeFileSync(this.metaPath, JSON.stringify(meta, null, 2));
+  writeHeader(header: JsonlHeader) {
+    // 单文件三段式：第一行是 header
+    writeFileSync(this.logPath, JSON.stringify({ type: 'header', ...header }) + '\n');
   }
 
-  async writeSample(sample: EvalSample) {
-    // 用 zod 校验一遍再写盘，捕获脏数据
-    const validated = EvalSampleSchema.parse(sample);
-    appendFileSync(this.samplesPath, JSON.stringify(validated) + '\n');
+  writeSample(entry: JsonlSampleEntry) {
+    // 第 2..N 行：每条 sample 跑完立刻 append，挂了不丢已跑数据
+    appendFileSync(this.logPath, JSON.stringify({ type: 'sample', ...entry }) + '\n');
   }
 
-  async writeFooter(stats: EvalStats, results: EvalResults) {
-    const existing = JSON.parse(readFileSync(this.metaPath, 'utf-8'));
-    existing.stats = { ...existing.stats, ...stats };
-    existing.results = results;
-    writeFileSync(this.metaPath, JSON.stringify(existing, null, 2));
+  writeFooter(footer: JsonlFooter) {
+    // 最后一行：汇总 metrics 和 completedAt
+    appendFileSync(this.logPath, JSON.stringify({ type: 'footer', ...footer }) + '\n');
   }
 }
 ```
@@ -209,43 +215,45 @@ evalkit list runs/
 输出：
 
 ```
-NAME                                                  TASK              MODEL                       SAMPLES  PASS^1  COST    TIME
-2026-05-27T13-01-07Z_ch04-l1-seed-60-mixed_gpt-4o     ch04-l1-seed-60   sonnet (via mock-server)     60       0.550   $0.00*  ~16m
-2026-05-27T13-15-22Z_ch04-l1-seed-60-mixed_gpt-4o-mini ch04-l1-seed-60  haiku (via mock-server)      60       0.50    $0.00*  ~12m
-2026-05-27T13-30-11Z_ch04-l1-seed-60-prompt-v2_gpt-4o ch04-l1-seed-60   sonnet (加固 prompt)         60       0.85    $0.00*  ~16m
+NAME                                                        TASK              MODEL                    SAMPLES  PASS^1  COST    TIME
+2026-05-27T13-01-07Z_ch04-l1-seed-60-mixed_gpt-4o.jsonl     ch04-l1-seed-60   sonnet (via mock-server)  60       0.550   $0.00*  ~16m
+2026-05-27T13-15-22Z_ch04-l1-seed-60-mixed_gpt-4o-mini.jsonl ch04-l1-seed-60  haiku (via mock-server)   60       0.50    $0.00*  ~12m
+2026-05-27T13-30-11Z_ch04-l1-seed-60-prompt-v2_gpt-4o.jsonl ch04-l1-seed-60   sonnet (加固 prompt)      60       0.85    $0.00*  ~16m
 
 * 走 Max plan 不计费
 ```
 
-只读每个 run 的 `meta.json`（< 5KB），快速渲染表格。
+每个 run 只读第一行（header）和最后一行（footer）就能拿到全部表格字段，不用扫 N 个 sample 行。`head -1 xxx.jsonl | jq` / `tail -1 xxx.jsonl | jq` 一行能查。
 
 ```ts
-// examples/evalkit/src/cli/list.ts
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+// examples/evalkit/src/log/list.ts —— 简化展示
+import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 export function listRuns(rootDir: string, opts: { task?: string; model?: string } = {}) {
-  const dirs = readdirSync(rootDir, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name);
+  const files = readdirSync(rootDir).filter((f) => f.endsWith('.jsonl'));
 
   const rows: any[] = [];
-  for (const dir of dirs) {
-    const metaPath = resolve(rootDir, dir, 'meta.json');
-    if (!existsSync(metaPath)) continue;
-    const meta = JSON.parse(readFileSync(metaPath, 'utf-8'));
+  for (const file of files) {
+    const fullPath = resolve(rootDir, file);
+    const lines = readFileSync(fullPath, 'utf-8').trim().split('\n');
+    if (lines.length < 2) continue;
 
-    if (opts.task && meta.eval.taskName !== opts.task) continue;
-    if (opts.model && meta.eval.model !== opts.model) continue;
+    const header = JSON.parse(lines[0]);
+    const footer = JSON.parse(lines[lines.length - 1]);
+    if (header.type !== 'header') continue;
+
+    if (opts.task && header.taskName !== opts.task) continue;
+    if (opts.model && header.model !== opts.model) continue;
 
     rows.push({
-      name: dir,
-      task: meta.eval.taskName,
-      model: meta.eval.model,
-      samples: meta.results?.completedSamples ?? '-',
-      pass1: meta.results?.metrics?.accuracy?.toFixed(3) ?? '-',
-      cost: meta.stats?.modelUsage?.estimatedCostUsd?.toFixed(2) ?? '-',
-      time: meta.stats?.totalTimeMs ? `${(meta.stats.totalTimeMs / 1000).toFixed(0)}s` : '-',
+      name: file,
+      task: header.taskName,
+      model: header.model,
+      samples: footer.type === 'footer' ? lines.length - 2 : '-',
+      pass1: footer.metrics?.accuracy?.toFixed(3) ?? '-',
+      cost: footer.modelUsage?.estimatedCostUsd?.toFixed(2) ?? '-',
+      time: footer.totalTimeMs ? `${(footer.totalTimeMs / 1000).toFixed(0)}s` : '-',
     });
   }
 
@@ -259,19 +267,19 @@ export function listRuns(rootDir: string, opts: { task?: string; model?: string 
 
 ```bash
 # 看所有挂的样本（默认带 trace）
-evalkit view runs/<run-name> --filter status=I
+evalkit view runs/<run-name>.jsonl --filter status=I
 
 # 按 scorer 过滤（只看 toolCallMatch 挂的）
-evalkit view runs/<run-name> --scorer toolCallMatch --filter status=I
+evalkit view runs/<run-name>.jsonl --scorer toolCallMatch --filter status=I
 
 # 看特定 sample
-evalkit view runs/<run-name>/samples.jsonl --ids L1-synth-013
+evalkit view runs/<run-name>.jsonl --ids L1-synth-013
 
 # 摘要模式（不展示 trace，只列 id + reason）
-evalkit view runs/<run-name> --filter status=I --summary
+evalkit view runs/<run-name>.jsonl --filter status=I --summary
 
 # 导出过滤后样本到新 jsonl
-evalkit view runs/<run-name> --filter status=I --export failed-samples.jsonl
+evalkit view runs/<run-name>.jsonl --filter status=I --export failed-samples.jsonl
 ```
 
 关键功能：
@@ -284,13 +292,13 @@ evalkit view runs/<run-name> --filter status=I --export failed-samples.jsonl
 
 ```bash
 # 跨 run 对比
-evalkit diff runs/before runs/after
+evalkit diff runs/before.jsonl runs/after.jsonl
 
 # 输出 markdown 报告
-evalkit diff runs/before runs/after --format markdown > diff.md
+evalkit diff runs/before.jsonl runs/after.jsonl --format markdown > diff.md
 
 # 只关注 regressions
-evalkit diff runs/before runs/after --regressions-only
+evalkit diff runs/before.jsonl runs/after.jsonl --regressions-only
 ```
 
 实现核心：

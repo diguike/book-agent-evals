@@ -1,7 +1,7 @@
 ---
 title: 第 6 章　Provider 抽象与并发调度
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/RNfkwv8xYi4xMLk27TScypBPnLg"
-last_synced: "2026-06-01T04:40:16Z"
+last_synced: "2026-06-03T04:15:04Z"
 ---
 
 ## 本章你会拿到什么
@@ -409,7 +409,7 @@ GPT-4o 看着单价贵 9-10 倍，但因为 token 数也多 50%，实际 cost �
 
 EvalKit 跑评测时记录每个 sample 的 `usage.totalTokens`，最后汇总 `total_cost = Σ (input_tokens × input_price + output_tokens × output_price)`。**用同一份中文评测集，三种模型的实际 cost 才是可比的**。
 
-价格表写在 `examples/evalkit/src/provider/pricing.ts`：
+**仓库当前实现**：EvalKit 暂时没把定价表抽成独立 lib 文件，cost 计算落在跑评测的章节脚本里（`examples/ch06-provider/src/eval.ts` 等）按需写一份常量。下面这张表是参考写法，读者把它复制进自己的脚本即可；后续要演化成 `evalkit/src/provider/pricing.ts` 独立模块也很自然——本书 v1 没强制内置，给读者按需扩展的空间：
 
 ```ts
 export const PRICING_2026_05 = {
@@ -435,7 +435,7 @@ export const PRICING_2026_05 = {
 | `src/provider/registry.ts` | `src/inspect_ai/model/_registry.py` |
 | `src/provider/cache.ts` | `src/inspect_ai/model/_cache.py` |
 | `src/provider/retry.ts` + `concurrency.ts::pmap` | `src/inspect_ai/util/_limits.py` + `_connections.py`（adaptive） |
-| `src/provider/pricing.ts` | inspect_ai 没有内置定价表，社区有 `inspect-ai-extras/pricing` |
+| 定价表（本章正文里给的参考常量；EvalKit 暂未内置 lib） | inspect_ai 没有内置定价表，社区有 `inspect-ai-extras/pricing` |
 
 inspect_ai 内置了 30+ provider（Together、Groq、Bedrock、Vertex…），我们只写 5 个（OpenAI / Anthropic / DeepSeek / Qwen / 智谱）够用。其余 provider 都用 OpenAI 兼容协议 + 不同 baseURL 接入，读者自己加一行 REGISTRY 即可。
 

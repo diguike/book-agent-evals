@@ -1,7 +1,7 @@
 ---
 title: 第 4 章　构建评测集种子（60 条 L1）
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/FZlBwhKvvioyDOkj2RFcy1qTnYs"
-last_synced: "2026-06-01T04:40:12Z"
+last_synced: "2026-06-03T04:15:02Z"
 ---
 
 ## 本章你会拿到什么
@@ -13,7 +13,7 @@ last_synced: "2026-06-01T04:40:12Z"
 3. **学会工程化的"评测集从哪里来"方法论**，能直接回公司给自家 agent 造评测集
 4. **理解为什么"用 Claude 造 Claude 的评测"是反模式**——以及怎么避免
 
-代码在 `examples/evalkit/src/synth/`（合成 pipeline）和 `examples/eval-datasets/l1/`（最终样本）。
+**代码地图**：本章把合成 pipeline 拆成 5 个阶段讲解（种子 → 合成 → 去重 → 自动 review → 人工 review）。**仓库实现里这 5 段合并在一个文件 `examples/eval-datasets/src/gen_l1.ts` 中**——不再拆 5 个独立模块，方便读者一眼读完。本章后续每个阶段贴的代码片段都标注它对应到 `gen_l1.ts` 的哪一段。最终评测集产物是 `examples/eval-datasets/l1/v2.0.0.jsonl`（200 条完整集，本章 demo 从中 stride 抽样 60 条混合分布跑 pass^1）。
 
 ## 工程师做评测集的两种典型错误
 
@@ -84,7 +84,7 @@ Personas:  完整信息提供 / 缺订单号 / 缺商品名 / 缺金额
 4. **每条种子标注期望行为**：不只是 `expected_tool_calls`，还要附 `note` 字段说明这条想测什么
 5. **跨工具组合**：至少 1-2 条种子需要多工具协作（get_order → refund_order）
 
-示例 10 条种子（保存在 `examples/eval-datasets/l1/seed-10-handwritten.jsonl`）：
+示例 10 条种子（在 `examples/eval-datasets/src/gen_l1.ts` 里以 `SEEDS` 常量形式硬编码作为合成的起点；最终生成的 200 条会写到 `examples/eval-datasets/l1/v2.0.0.jsonl`）：
 
 ```jsonc
 // 种子 #1: 单工具，完整信息，礼貌 persona
@@ -202,7 +202,7 @@ Personas:  完整信息提供 / 缺订单号 / 缺商品名 / 缺金额
 
 我们的 ShopAgent 默认底模是 GPT-4o，所以**用 Claude Sonnet 4.5 当合成器**（或反过来：ShopAgent 用 Claude 时合成器用 GPT-5）。这种"交叉模型"策略是合成数据最重要的一条工程纪律。
 
-合成 prompt 模板（`examples/evalkit/src/synth/seed_to_candidates.ts`）：
+合成 prompt 模板（对应 `examples/eval-datasets/src/gen_l1.ts` 里的 `SYNTH_PROMPT` 常量）：
 
 ```ts
 const SYNTH_PROMPT = `你是电商客服评测数据集设计师。根据下面的种子样本，生成一条新的评测样本。
@@ -238,7 +238,7 @@ const SYNTH_PROMPT = `你是电商客服评测数据集设计师。根据下面�
 > **快速上手路线读者注意**：下面合成代码用 Anthropic SDK 直接调 Claude。第 6 章会引入 EvalKit 的 Provider 抽象（统一 OpenAI / Anthropic / DeepSeek / Qwen 等的接口），届时可以换成 `getDefaultRouter().complete(...)`。现在这一章先用最简单的直调方式（不引入 router 概念）—— 30 行能跑通就够，不阻塞造数据集的核心动作。
 
 ```ts
-// examples/evalkit/src/synth/seed_to_candidates.ts
+// examples/eval-datasets/src/gen_l1.ts —— 合成阶段（节选）
 import Anthropic from '@anthropic-ai/sdk';  // 官方 [Anthropic TS SDK](https://github.com/anthropics/anthropic-sdk-typescript)
 import { readFileSync, writeFileSync } from 'node:fs';
 
@@ -271,10 +271,9 @@ async function synthesize(seeds: Sample[], n: number): Promise<Sample[]> {
   return candidates;
 }
 
-// 注意：JSONL 必须按行解析，不能直接 JSON.parse 整个文件
-const seeds = readFileSync('seed-10-handwritten.jsonl', 'utf-8')
-  .trim().split('\n').filter((l) => l.trim()).map((l) => JSON.parse(l));
-const candidates = await synthesize(seeds, 200);
+// 仓库里 SEEDS 直接以 const 数组写在 gen_l1.ts 顶部（避免再开一个 jsonl 文件）；
+// 想替换种子改 const 就行，无需手动维护 seed-10-handwritten.jsonl
+const candidates = await synthesize(SEEDS, 200);
 writeFileSync('candidates-200.jsonl', candidates.map((s) => JSON.stringify(s)).join('\n'));
 ```
 
@@ -287,7 +286,7 @@ writeFileSync('candidates-200.jsonl', candidates.map((s) => JSON.stringify(s)).j
 > **embedding 是什么？** 一段文本（这里是 `user_input`）喂给 embedding 模型，输出一个高维浮点向量（OpenAI `text-embedding-3-small` 是 1536 维）。**语义相近的文本，向量也相近**——用余弦相似度（cosine similarity）量化"接近度"，0 表示完全无关，1 表示几乎一样。本书后续多处用到 embedding，统一用这个工具做"语义相似度"判断。
 
 ```ts
-// examples/evalkit/src/synth/dedupe.ts
+// examples/eval-datasets/src/gen_l1.ts —— 去重阶段（节选）
 import OpenAI from 'openai';
 const openai = new OpenAI();
 
@@ -367,7 +366,7 @@ const AUTO_REVIEW_PROMPT = `判断下面这条评测样本的质量。打分 0-3
 | L1-synth-004 | "我那个 iPhone 退了行不..." | get_user, refund | ✓ | 信息缺失 + 礼貌，好 case |
 | ... | ... | ... | ... | ... |
 
-作者本人过完 120 条约 1.5 小时，留下 50 条。加上 10 条手写种子，得到最终 **60 条 L1 评测集**。文件 `examples/eval-datasets/l1/l1-final-60.jsonl`。
+作者本人过完 120 条约 1.5 小时，留下 50 条。**仓库里把人工筛过的样本直接合并进 `examples/eval-datasets/l1/v2.0.0.jsonl`（200 条完整集）**——这是把"种子 + 合成扩散 + 人工筛"的全部产物归一到同一个版本化文件里。本章 demo（`examples/ch04-dataset-seed`）用 stride 抽样从 v2.0.0 取出 60 条混合分布跑 pass^1，模拟"L1 第一版 60 条"的体感。完整 200 条的来源说明见 `examples/eval-datasets/README.md`。
 
 ## Phase 5：用最终评测集复跑
 
@@ -421,7 +420,7 @@ MODEL=gpt-4o npm run eval
 数据集做完不是结束，最后跑一遍**自动一致性检查**，避免低级错误：
 
 ```ts
-// examples/evalkit/src/synth/lint.ts
+// examples/eval-datasets/src/gen_l1.ts —— lint 阶段（节选）
 function lintDataset(samples: Sample[]): LintReport {
   const issues: string[] = [];
   for (const s of samples) {
@@ -462,7 +461,7 @@ git tag dataset-l1-v1.0.0
 | 自动 review 打分 | Promptfoo 的 `assert: llm-rubric` |
 | 数据集版本化 + Changelog | Hamel evals-faq.md "Version your evals" |
 
-EvalKit 把这一套合成 pipeline 内置到 `src/synth/`，包名 `@inferloop/evalkit/synth`，是我们 vs inspect_ai 的差异化加分项之一。
+本仓库把这一套合成 pipeline 独立成一个 workspace `@inferloop/eval-datasets`（`examples/eval-datasets/`），跟评测框架 `@inferloop/evalkit` 解耦——评测集生成是离线一次性活，跟运行时评测调度是两套关注点。这是我们 vs inspect_ai 的差异化加分项之一（inspect_ai 不内置数据集生成）。
 
 ## 本章要点回顾
 
@@ -476,7 +475,7 @@ EvalKit 把这一套合成 pipeline 内置到 `src/synth/`，包名 `@inferloop/
 
 到这一步你拿到了：
 
-1. **60 条 L1 评测集**（`examples/eval-datasets/l1/l1-final-60.jsonl`），可立刻在 EvalKit 上跑
+1. **L1 评测集 v2.0.0**（`examples/eval-datasets/l1/v2.0.0.jsonl`，200 条完整集；本章 demo 用 stride 抽 60 条混合分布），可立刻在 EvalKit 上跑
 2. **完整合成 pipeline**：种子 → 合成 → 去重 → 自动 review → 人工 review → lint，500 行 TS 代码
 3. **真实的 pass^1 分布**：Claude Sonnet 4.5 via mock-server 55%，按工具/类别拆分清楚知道哪里弱（双工具流程 + policy 2 是两大瓶颈）
 4. **一份能 fork 改造的方法论**：把 ShopAgent 换成你自家 agent，把工具集换成你的工具集，整个 pipeline 直接复用

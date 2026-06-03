@@ -1,7 +1,7 @@
 ---
 title: 第 2 章　跑通第一个评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Ni2DwNPdBik0Jaks3pWczK6lnFh"
-last_synced: "2026-06-03T03:54:52Z"
+last_synced: "2026-06-03T04:15:01Z"
 ---
 
 ## 本章你会拿到什么
@@ -46,11 +46,18 @@ npm run doctor    # 检查 Node 版本、API key、workspace 配置
 `doctor` 跑通后会输出类似：
 
 ```
-✓ Node v22+
-✓ npm workspaces 配置 OK
-✓ @inferloop/evalkit / @inferloop/shopagent 包已识别
-✓ ShopAgent DB 已 seed — examples/shopagent/data/shopagent.db 存在（5000 订单 / 500 用户 / 200 SKU / 100 FAQ）
-✓ .env 已配置 OPENAI_API_KEY
+[doctor] book-agent-evals 环境检查
+
+  ✓ Node 版本 ≥ 22  —  当前 v22.x
+  ✓ workspaces 根 package.json  —  1 个 workspace 模式已配置
+  ✓ 依赖已安装  —  node_modules 存在
+  ✓ @inferloop/evalkit 包  —  已识别
+  ✓ @inferloop/shopagent 包  —  已识别
+  ✓ workspace 包已 build  —  evalkit / shopagent 的 dist/ 都已生成
+  ✓ ShopAgent DB 已 seed  —  examples/shopagent/data/shopagent.db 存在（5000 订单 / 500 用户 / 200 SKU / 100 FAQ）
+  ✓ .env 文件  —  OPENAI_API_KEY 已配置（sk-xxxx…）
+
+[doctor] 全部通过，可以开始跑评测了。
 ```
 
 如果有 ✗，跟着提示修就行——doctor 给的指引是具体的（不是"自己排查环境问题"那种）。

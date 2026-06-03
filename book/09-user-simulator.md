@@ -1,7 +1,7 @@
 ---
 title: 第 9 章　用户行为模拟器
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/P6HTwld1SidMIWkHOocc1sZJnIh"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-06-03T04:15:07Z"
 ---
 
 ## 本章你会拿到什么
@@ -14,7 +14,7 @@ last_synced: "2026-05-27T14:59:41Z"
 4. **评测模拟器本身的质量**——元评测（模拟器准不准，会不会"瞎演"）
 5. **用模拟器跑 ShopAgent 第一批 30 条 L2 多轮评测**，拿到真实多轮 pass^1
 
-代码在 `examples/evalkit/src/user_simulator/`（新增模块）。
+代码在 `examples/evalkit/src/solver/user_simulator.ts`（**单文件实现**，types / system prompt 模板 / 模拟器实例 / 元评测打分函数全部塞在同一个文件里，~250 行；本章把它拆成几节讲解，对应到文件里不同的导出符号）。
 
 ## 静态对话脚本不够，必须有模拟器
 
@@ -63,7 +63,7 @@ Agent: [响应：好的，可以拒收]
 ## 用户模拟器接口
 
 ```ts
-// examples/evalkit/src/user_simulator/types.ts
+// examples/evalkit/src/solver/user_simulator.ts —— types 部分
 export interface UserScenario {
   instruction: string;              // 任务剧本
   knownInfo?: string;                // 用户知道的信息
@@ -92,7 +92,7 @@ export function createUserSimulator(
 直接借 τ²-bench 的全局规则（[`data/tau2/user_simulator/simulation_guidelines.md`](https://github.com/sierra-research/tau2-bench/blob/main/data/tau2/user_simulator/simulation_guidelines.md)），翻译并适配中文电商场景：
 
 ```ts
-// examples/evalkit/src/user_simulator/prompt.ts
+// examples/evalkit/src/solver/user_simulator.ts —— SIMULATION_GUIDELINES_ZH 常量
 export const SIMULATION_GUIDELINES_ZH = `
 你正在扮演一个联系客服的电商消费者。你的目标是模拟真实用户互动，同时严格遵循剧本指令。
 
@@ -132,7 +132,7 @@ export const SIMULATION_GUIDELINES_ZH = `
 ## 实现
 
 ```ts
-// examples/evalkit/src/user_simulator/index.ts
+// examples/evalkit/src/solver/user_simulator.ts —— createUserSimulator 实现
 import type { Provider, ChatMessage } from '../types.js';
 
 const DEFAULT_PERSONA = '语气中性，信息完整，不啰嗦';
@@ -280,7 +280,7 @@ export function createUserSimulator(
 最简单的元评测就 2 个维度：
 
 ```ts
-// examples/evalkit/src/user_simulator/meta_eval.ts
+// examples/evalkit/src/solver/user_simulator.ts —— 元评测打分函数
 const META_EVAL_PROMPT = `下面是一段评测对话。判断里面**用户模拟器**（assistant 之外的那一方）的表现：
 
 剧本：
@@ -368,8 +368,8 @@ L2 评测集格式：
 
 | EvalKit 用户模拟器 | τ²-bench | inspect_ai |
 |---|---|---|
-| `user_simulator/index.ts` | `src/tau2/user/user_simulator.py` | 无内置（agent eval 不在 inspect_ai 核心范围） |
-| `user_simulator/prompt.ts` | `data/tau2/user_simulator/simulation_guidelines.md` | - |
+| `solver/user_simulator.ts`（单文件，含 createUserSimulator） | `src/tau2/user/user_simulator.py` | 无内置（agent eval 不在 inspect_ai 核心范围） |
+| `solver/user_simulator.ts` 内嵌的 `SIMULATION_GUIDELINES_ZH` 常量 | `data/tau2/user_simulator/simulation_guidelines.md` | - |
 | `meta_eval.ts` | τ² 内部没有显式元评测 | - |
 
 我们的 TS 版相比 τ²-bench 的 Python 版省略了：

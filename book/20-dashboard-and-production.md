@@ -1,19 +1,19 @@
 ---
 title: 第 20 章　Dashboard 与生产部署
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UmEbwokc5iwnlvkN5CJc0zahnMc"
-last_synced: "2026-06-01T04:40:32Z"
+last_synced: "2026-06-03T04:15:15Z"
 ---
 
 ## 本章你会拿到什么
 
 CLI 评测够日常，但**多人协作 + 长期趋势可视化**需要 dashboard。这一章你会：
 
-1. **拿到 EvalKit Dashboard**：[Next.js](https://nextjs.org)（Vercel 出品的 React 全栈框架）+ [SQLite](https://www.sqlite.org)（嵌入式单文件 SQL 数据库，无需 server）+ [Tailwind](https://tailwindcss.com)（utility-first CSS 框架），约 800 行 TS，本地启动即用
-2. **看到完整的可视化套件**：run 列表 / 趋势图 / 跨 run diff / failure mode 分布 / cost 跟踪
-3. **学会什么时候该从 EvalKit 迁移到 langfuse / inspect_ai / 自研平台**——迁移路径明确
+1. **拿到 EvalKit Dashboard 教学 demo**：[Node.js 原生 http](https://nodejs.org/api/http.html) + JSONL 直读，约 80 行 TS，本地启动即用，浏览器看 run 列表 + 单 run 详情
+2. **看到一个最小可上线 dashboard 该有的东西**：run 列表 / 单 run 详情 / failure case 抽查
+3. **学会什么时候该从 EvalKit demo 迁移到 langfuse / Arize Phoenix / 自研 Next.js 版本**——迁移路径明确
 4. **理解 EvalKit 的局限**：它不是一切，知道什么时候放下它
 
-代码：`examples/evalkit/src/dashboard/`（Next.js app，独立于 CLI）。
+代码：`examples/ch20-dashboard/src/eval.ts`（80 行 node:http 服务，读 ch04 / ch11 / ch17 跑出的 jsonl 日志渲染 HTML 表格）。**这章故意保持极简**：教学场景验证"dashboard 长什么样、能解决什么问题"够用；生产部署直接上 langfuse 或自己写 Next.js + SQLite 重做（章节后半段给出迁移指引）。
 
 ## 为什么本地 SQLite 而不是云平台
 
@@ -22,16 +22,20 @@ CLI 评测够日常，但**多人协作 + 长期趋势可视化**需要 dashboar
 A. **直接读 JSONL**：每次刷新页面扫所有 run 目录
 B. **SQLite 索引**：把 JSONL 元数据 sync 到 SQLite，dashboard 查 SQLite
 
-10 个 run 时 A 够用，100 个 run 时 A 卡，1000 个 run 时 A 直接挂。我们用 B：
+10 个 run 时 A 够用，100 个 run 时 A 卡，1000 个 run 时 A 直接挂。
+
+**本章 demo 选 A**（教学场景 < 50 个 run，直接读 JSONL 最简单，零依赖）；**生产场景应该上 B**（SQLite 索引）或者直接接 langfuse。两条路径在章节后半段都会讲。
 
 ```
-runs/                              # JSONL 文件（source of truth）
-└── 2026-05-27T...
-    ├── meta.json
-    └── samples.jsonl
+runs/                              # 各章节产生的 JSONL 日志（source of truth）
+├── ch04-dataset-seed/runs/<ts>_<task>_<model>.jsonl
+├── ch11-trajectory/runs/<ts>_<task>_<model>.jsonl
+└── ch17-dataset-v2/runs/<ts>_<task>_<model>.jsonl
 
+# 本章 demo 直接扫这些目录，零索引零数据库。
+# 演进到生产时引入：
 .evalkit-dashboard/                # 本地 dashboard 存储（gitignored）
-├── index.db                       # SQLite 索引
+├── index.db                       # SQLite 索引（演进方向，本章 demo 没用）
 └── cache/
 ```
 
@@ -107,7 +111,7 @@ dashboard 启动时跑一次全量 sync，之后增量 sync（监听 runs/ 目�
 /datasets            评测集列表 + 版本对比
 ```
 
-6 个核心页面。每个页面用 Next.js 14 App Router + [shadcn/ui](https://ui.shadcn.com)（基于 Radix + Tailwind 的 React 组件库，组件代码直接复制到项目里而不是 npm install）组件库构建。
+这 6 个页面是**完整生产 dashboard 的目标蓝图**。本章 demo 故意做了极致简化——只实现"/"（run 列表）和 "/log?path=..."（单 run 详情），两条路径 + 几十行 HTML 字符串模板就能验证 dashboard 这个动作能解决什么问题。剩下的 trends / diff / datasets 等页面是**生产化时的演进方向**：直接用 [Next.js 14 App Router](https://nextjs.org/docs/app) + [shadcn/ui](https://ui.shadcn.com)（基于 Radix + Tailwind 的 React 组件库，组件代码直接复制到项目里而不是 npm install）按这个蓝图扩展即可。
 
 ## Runs 列表页
 
@@ -248,11 +252,12 @@ return (
 ## 启动 Dashboard
 
 ```bash
-cd examples/evalkit
+cd examples/ch20-dashboard
 npm run dashboard
+# 等价命令：npm run eval（同一个入口，名字双写为了让书里命令更直白）
 ```
 
-启动 Next.js dev server，浏览器打开 `http://localhost:3030`。第一次启动自动 sync 所有 runs 到 SQLite（5 秒级）。后续启动从 SQLite 读，秒开。
+启动 node:http 服务，默认监听 `:3091`，浏览器打开 `http://localhost:3091`。每次请求实时扫 `ch04 / ch11 / ch17` 的 `runs/` 目录读 jsonl 渲染表格——没有缓存层，10-50 个 run 量级毫秒级，更多就该上 SQLite 索引（演进方向，本章不写）。
 
 部署上生产：
 
@@ -421,7 +426,7 @@ EvalKit CLI 仍然能用（继续在 PR CI 里跑），但 dashboard 切换到 l
                        ↓
 ┌──────────────────────────────────────────────────┐
 │ Dashboard + CI                                    │
-│   - Next.js Dashboard (本地 SQLite)                │
+│   - 本章 demo: 80 行 node:http（演进方向：Next.js + SQLite）│
 │   - GitHub Actions 守门                            │
 │   - Slack/飞书通知                                  │
 └──────────────────────────────────────────────────┘
@@ -472,7 +477,7 @@ EvalKit **不是替代品**——读完这本书，你既能直接用 EvalKit �
 
 ## 本章要点回顾
 
-- **Dashboard 3 层架构**：SQLite 数据层 + Next.js API + 简单 UI，本章 demo 200 行 TS 跑起来
+- **Dashboard 教学 demo**：node:http 80 行 TS，直读 ch04 / ch11 / ch17 的 jsonl，最小验证"dashboard 长什么样、能解决什么问题"；生产化方向是 Next.js + SQLite + langfuse 三选一
 - **从 EvalKit 迁移到 langfuse**：5 步路径 + 数据格式 1:1 映射表（trace / spans / scores / dataset_items），无感切换
 - **生产 dashboard 必有 4 个视图**：跑历史列表 / 单 run 详情 / 跨 run diff / 跨时间趋势
 - **保留 EvalKit 不迁移的场景**：团队规模 < 10、还在评测体系建设期、想完全掌控 cost & 数据。规模大了再迁

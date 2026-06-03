@@ -1,7 +1,7 @@
 ---
 title: 第 14 章　Judge 校准与显著性检验
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/ENFkwfyDPiSxwekzogUcguyKnWg"
-last_synced: "2026-06-01T04:40:23Z"
+last_synced: "2026-06-03T04:15:10Z"
 ---
 
 ## 本章你会拿到什么
@@ -252,10 +252,10 @@ Hamel 强调："**TPR=95% 但 TNR=40% 的 judge 是垃圾**"。原因：高 TPR 
 | ≥ 70% 且 ≥ 70% | | judge 勉强用，标注更多数据 |
 | < 70% 任一 | | judge 不可用，重写 prompt 或换模型 |
 
-EvalKit 的 judge wrapper 自动检查：
+EvalKit 当前 v1 lib（`scorer/judge/model_graded.ts` / `pairwise.ts`）没把"performance 元数据 + 自动报警"封装成单独的 wrapper，给读者按需添加。下面是推荐写法，读者按自家 judge 集成进 lib 或 章节 example：
 
 ```ts
-// examples/evalkit/src/scorer/judge/wrapper.ts
+// 推荐设计：把 judge 包装成带性能门槛的 wrapper（v1 没内置，读者可按需加到自家 evalkit/src/scorer/judge/wrapper.ts）
 export function createJudge(opts: {
   prompt: string;
   performance: { TPR: number; TNR: number };

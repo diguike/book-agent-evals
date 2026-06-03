@@ -1,7 +1,7 @@
 ---
 title: 第 18 章　数据飞轮：线上日志反哺评测集
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/ZXRIwwL2jirTzRkPDT5cXmPbnre"
-last_synced: "2026-06-01T04:40:28Z"
+last_synced: "2026-06-03T04:15:13Z"
 ---
 
 ## 本章你会拿到什么
@@ -13,7 +13,7 @@ last_synced: "2026-06-01T04:40:28Z"
 3. **学会自动标注 pipeline 的设计**：LLM 预标 + 人工抽检 + 高置信入集 + 低置信丢人工
 4. **看到一周的真实飞轮跑了什么**：模拟 7 天线上日志，演示挖掘 → 标注 → 入集 → 复跑评测
 
-代码增量：`examples/evalkit/src/flywheel/`（新建模块）。
+**代码组织说明**：本章把数据飞轮拆成 3 个门讲（escalation 信号挖掘 → 自动归类 → PII 脱敏），三段在书里以**方法论 + 参考实现伪代码**形式呈现。仓库当前 v1 没把 flywheel 抽成独立 lib 模块（`evalkit/src/flywheel/` 不存在），而是在 ch18 章节 example 里跑一个最小可用 demo（`examples/ch18-data-flywheel/src/eval.ts`，~80 行）：扫 ch17 跑出的 jsonl 日志、用 `parseLog` 拆 sample、按规则筛"边界 case"（policy 关键词匹配）、写到 `candidates/v2.1.0-candidates.jsonl` 作为下一版评测集的候选。本章后面贴出的 `signals/` / `pii_scrubber.ts` 等模块化代码是**推荐写法**——读者把章节 demo 抄进自家 evalkit 后按这套结构扩展即可。
 
 ## 数据飞轮的形态
 
@@ -61,7 +61,7 @@ Shreya Shankar 在 [Data Flywheels for LLM Applications](https://www.sh-reya.com
 线上 agent 内部如果调了 `escalate_to_human(reason)`——这是 agent 自己说"我搞不定了"。所有这类对话默认进 hard case pool：
 
 ```ts
-// examples/evalkit/src/flywheel/signals/escalation.ts
+// 推荐写法（仓库 v1 没内置，参考实现；可对照 examples/ch18-data-flywheel/src/eval.ts 里的 interesting filter）
 export function findEscalations(traceDb: TraceDb, since: Date): TraceEntry[] {
   return traceDb.query({
     toolCalled: 'escalate_to_human',
@@ -188,7 +188,7 @@ embedding 相似度对比 v2.1.0 全集，如果跟已有样本相似度 > 0.85 
 最严格的一道。线上日志里**几乎肯定有真实 PII**（Personally Identifiable Information，个人身份信息——能识别到具体个人的数据：姓名、手机号、身份证号、收货地址、邮箱等。中国《个人信息保护法》、欧盟 GDPR 都对 PII 处理有严格要求）。所有入集样本必须经过 PII 替换：
 
 ```ts
-// examples/evalkit/src/flywheel/pii_scrubber.ts
+// 推荐写法（仓库 v1 没内置；PII 规则要按业务调整，故留给读者自家落地）
 export function scrubPII(text: string): string {
   return text
     .replace(/1[3-9]\d{9}/g, '1XXXXXXXXXX')           // 手机号
