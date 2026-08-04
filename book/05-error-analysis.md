@@ -1,7 +1,7 @@
 ---
 title: 第 5 章　错误分析与失败模式归类
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Kay5wEpDIimQE2kv8yIcTRvOnwb"
-last_synced: "2026-06-01T04:40:14Z"
+last_synced: "2026-07-05T08:02:54Z"
 ---
 
 ## 本章你会拿到什么
@@ -153,7 +153,7 @@ FM-4 和 FM-5 留到后续章节：multi-turn 改造在第 10 章讲，judge 设
 
 ## 修复 FM-1 / FM-2 / FM-3 的 prompt 改动
 
-注意：**改 ShopAgent 的 prompt 不属于本书主线**（铁律 1，本书不讲 agent 开发）。但这里作为"错误分析→修复"的闭环示例，简单演示一下。完整 ShopAgent 的 prompt 工程请看 [《百万级 AI Agent 平台架构》](#)。
+注意：**改 ShopAgent 的 prompt 不属于本书主线**——本书只讲评测，不讲 agent 开发。但这里作为"错误分析→修复"的闭环示例，简单演示一下，让读者看到 failure mode 是如何转化成具体改动的。完整 ShopAgent 的 prompt 工程请看 [《百万级 AI Agent 平台架构》](#)。
 
 ShopAgent 的 system prompt 原本是：
 

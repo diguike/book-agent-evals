@@ -1,7 +1,7 @@
 ---
 title: 第 1 章　评测金字塔与 ShopAgent 接口
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/UocOwwmxqiffTBksfWvcgEGmnrd"
-last_synced: "2026-06-01T09:16:14Z"
+last_synced: "2026-07-05T08:02:54Z"
 ---
 
 ## 本章你会拿到什么
@@ -229,31 +229,31 @@ get_order(order_id: string): Order
 // 按用户 ID 取用户资料（姓名 / 手机 / 默认地址 / 最近订单）。处理"我那个订单"等省略式问句时用来定位用户
 get_user(user_id: string): UserProfile
 
-// 在 FAQ 知识库做语义检索。商品咨询类问题必须走这条路径，禁止 agent 凭模型常识回答
-search_faq(query: string): FAQResult[]
+// 在 FAQ 知识库做检索。商品咨询类问题必须走这条路径，禁止 agent 凭模型常识回答
+search_faq(query: string, top_k?: number): FAQResult[]
 ```
 
 **可写不可逆类（3 个，评测金矿）**：调一次就改了线上数据 / 出了钱。Agent 错调一次就是事故，评测最值钱的部分集中在这三个工具上。
 
 ```ts
 // 发起退款。amount 必须 ≤ 订单金额，错传一次就是真金白银流出去（前言里那个 0 元退款事故的同源风险点）
-refund_order(order_id: string, amount: number, reason: string): RefundResult
+refund_order(order_id: string, amount: number, reason?: string): RefundResult
 
 // 修改收货地址。仅 pending 订单允许调；对 shipped 订单调用算 policy 2 违规
-update_shipping_address(order_id: string, new_address: Address): UpdateResult
+update_shipping_address(order_id: string, new_address: string): UpdateResult
 
 // 取消订单。同样仅 pending 状态可调用；shipped / delivered 订单要走退货流程而不是 cancel
-cancel_order(order_id: string, reason: string): CancelResult
+cancel_order(order_id: string, reason?: string): CancelResult
 ```
 
 **软操作类（2 个）**：会动状态但都是可恢复 / 无业务损失的操作，"软"指的是错调一次也不至于赔钱。
 
 ```ts
 // 把当前对话升级到人工客服。不改业务数据，只是把后续责任交出去
-escalate_to_human(case_id: string, reason: string): EscalationResult
+escalate_to_human(reason: string, urgency?: 'low' | 'medium' | 'high'): EscalationResult
 
 // 给订单加一条备注。任何状态都能调，用于记录用户意图供后续人工追溯，没有钱 / 物流副作用
-add_note(order_id: string, content: string): NoteResult
+add_note(order_id: string, note: string): NoteResult
 ```
 
 仅 8 个工具，因为我们要的是**评测练习场**，不是完整电商客服系统。商业系统会有 22 个甚至更多工具（手机号查人、会员等级、极速退款配额、补偿券、平台介入、风控拉黑、物流拦截……）——附录 D 提供了 ShopAgent 的扩展版（12 工具 + 8 policy），给想深挖 trajectory eval 的进阶读者。主线坚持 8 个，**避免读者先学半天电商业务才能开始评测**。
@@ -272,14 +272,14 @@ add_note(order_id: string, content: string): NoteResult
 
 ### Mock 数据集
 
-仓库提供 `examples/shopagent/seed/` 里的初始数据：
+仓库提供 seed 脚本（`examples/shopagent/src/db/seed.ts`）生成的初始数据：
 
 - **500 个虚拟用户**：随机生成姓名、手机号占位符（`13800001XXX`，非真实号）、收货地址
 - **200 个 SKU**：从公开商品目录改造
 - **5000 条订单**：覆盖各种状态（pending / processing / shipped / delivered / refunded / cancelled）
 - **100 条 FAQ**：退换货政策、活动规则等
 
-读者 `git clone` 后跑 `npm run shopagent:seed` 就能在本地 SQLite 里得到这套数据，立刻能让 ShopAgent 跑起来接收用户消息。
+读者 `git clone` 后在 `examples/shopagent` 下跑 `npm run seed` 就能在本地 SQLite 里得到这套数据，立刻能让 ShopAgent 跑起来接收用户消息。
 
 ## 一次真实的 ShopAgent 交互
 

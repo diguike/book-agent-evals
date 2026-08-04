@@ -1,7 +1,7 @@
 ---
 title: 第 8 章　RAG 子模块评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/ULUlwhSQ4iiSGYkpnhBcftwRnXd"
-last_synced: "2026-06-01T04:40:19Z"
+last_synced: "2026-07-05T08:02:54Z"
 ---
 
 ## 本章你会拿到什么
@@ -33,7 +33,7 @@ ShopAgent 的 `search_faq` 工具内部是一个 RAG 子系统——文档向量
 
 ## ShopAgent 的 `search_faq` 内部
 
-简单了解一下被测对象（铁律 1：只看接口不看实现，所以这里只看签名）：
+简单了解一下被测对象，按本书一贯的边界——只看接口签名，不展开实现：
 
 ```ts
 // examples/shopagent/src/tools/search_faq.ts —— 接口签名

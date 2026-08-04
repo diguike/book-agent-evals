@@ -1,14 +1,14 @@
 ---
 title: 第 2 章　跑通第一个评测
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/Ni2DwNPdBik0Jaks3pWczK6lnFh"
-last_synced: "2026-06-03T04:15:01Z"
+last_synced: "2026-07-05T08:02:54Z"
 ---
 
 ## 本章你会拿到什么
 
 读完这一章你会有三样具体的东西：
 
-1. **跑通第一个评测**：用 200 行 TS 的 EvalKit minimal 版本跑完 10 条 L1 评测样本，输出 JSONL 结果 + 终端汇总
+1. **跑通第一个评测**：用不到 200 行 TS 的 EvalKit minimal 版本跑完 10 条 L1 评测样本，输出 JSONL 结果 + 终端汇总
 2. **一个真实数字**：ShopAgent 在这 10 条任务上的 pass^1，以及换不同模型后的对比（不是教学样板编的数字，是你自己跑出来的；本仓库 demo 用 Claude Sonnet/Haiku via `examples/mock-llm-server` 实测两个模型都是 50%）
 3. **评测的最小心智模型**：理解一次评测里"数据集 / 跑 agent / 打分 / 写日志"四步分别在做什么
 
@@ -84,7 +84,7 @@ cp .env.example .env
 # 编辑 .env，填以下三行：
 #   OPENAI_API_KEY=mock-any-key-works     # mock-server 不校验，填啥都行
 #   OPENAI_BASE_URL=http://localhost:3030/v1
-#   MODEL=gpt-4o                          # mock-server 内部固定走 Claude Sonnet，model 名只是占位
+#   MODEL=gpt-4o                          # mock-server 把 gpt-4o 映射到 Claude Sonnet、gpt-4o-mini 映射到 Haiku
 
 # 3. 重跑 doctor 确认
 npm run doctor    # .env 那一项应该变 ✓
@@ -117,7 +117,7 @@ npm run doctor    # .env 那一项应该变 ✓
 - **expected_tool_calls**：期望 agent 调用的工具序列。`args_match` 是部分匹配（agent 实际传入的参数包含这些键值对即可）
 - **expected_response_contains**：期望 agent 最终回复里包含的字符串（lowercase + 去逗号匹配，参考 τ-bench `outputs` 字段的处理）
 
-10 条样本覆盖 ShopAgent 8 个工具中的 5 个高频路径：
+10 条样本覆盖 ShopAgent 8 个工具中的 7 个高频路径（只有 `get_user` 未覆盖）：
 
 | ID | 场景 | 期望工具 |
 |---|---|---|
@@ -134,7 +134,7 @@ npm run doctor    # .env 那一项应该变 ✓
 
 第 10 条特别有意思——它测试 policy 3（退款金额 ≤ 订单金额）。用户在输入里说"给我退 50000"，但订单实际金额 199。如果 agent 老老实实退 50000，pass = false；只退 199，pass = true。
 
-## 跑评测：200 行 EvalKit minimal
+## 跑评测：不到 200 行的 EvalKit minimal
 
 代码在 `examples/ch02-hello-world/src/index.ts`。完整代码这里贴出来，跟着看一遍：
 
@@ -142,7 +142,11 @@ npm run doctor    # .env 那一项应该变 ✓
 // examples/ch02-hello-world/src/index.ts
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { runShopAgent } from '@inferloop/shopagent';
+
+// 仓库根 package.json 是 "type": "module"，ESM 下没有 __dirname，需要自己拼一个
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // —— 1. 加载数据集 ——
 interface Sample {
@@ -268,19 +272,19 @@ MODEL=gpt-4o npm run eval
 
 ```
 [evalkit-minimal] 评测开始：10 条样本，模型 gpt-4o
-✓ L1-001 (1284ms)
-✓ L1-002 (1142ms)
-✓ L1-003 (2018ms)
-✓ L1-004 (1894ms)
-✓ L1-005 (1638ms)
-✗ L1-006 (1547ms) 未调用期望工具：search_faq
-✓ L1-007 (1721ms)
-✓ L1-008 (1124ms)
-✓ L1-009 (1342ms)
-✗ L1-010 (1958ms) 工具 refund_order 参数不匹配：amount 期望 199，实际 50000
+✓ L1-001 (31705ms)
+✓ L1-002 (18507ms)
+✗ L1-003 (16387ms) 未调用期望工具：refund_order
+✗ L1-004 (46702ms) 未调用期望工具：update_shipping_address
+✗ L1-005 (23927ms) 回复未包含期望字符串：已发货; 回复未包含期望字符串：不能; 回复未包含期望字符串：无法
+✓ L1-006 (36044ms)
+✗ L1-007 (16885ms) 未调用期望工具：cancel_order
+✓ L1-008 (22823ms)
+✓ L1-009 (17621ms)
+✗ L1-010 (17093ms) 工具 refund_order 参数不匹配：amount 期望 199，实际 50000
 
 [evalkit-minimal] pass^1 = 0.500 (5/10)
-[evalkit-minimal] 日志已写入：runs/2026-05-27T05-12-34-xyz_gpt-4o.jsonl
+[evalkit-minimal] 日志已写入：runs/2026-05-27T12-39-33-109Z_gpt-4o.jsonl
 ```
 
 > 数据点：上面是 Claude Sonnet 4.5 via `examples/mock-llm-server` 实测。如果你接真实 OpenAI key 跑 `MODEL=gpt-4o`，作者历史数据是 80% 左右。**两个数字都有意义**——sonnet 50% 暴露 ShopAgent system prompt 在多步工具调用上有缺陷（双工具流程第二步漏调），需要在 prompt 里加强 "调完 get_order 后必须继续调 refund/cancel/update_address"。
@@ -302,21 +306,21 @@ MODEL=gpt-4o-mini npm run eval
 输出（实测）：
 
 ```
-✓ L1-001 (864ms)
-✓ L1-002 (731ms)
-✗ L1-003 (1184ms) 工具 refund_order 参数不匹配：order_id 期望 o_77543，实际 o_77345
-✓ L1-004 (1042ms)
-✗ L1-005 (998ms) 工具 update_shipping_address 不应被调用（已发货状态）
-✗ L1-006 (1247ms) 未调用期望工具：search_faq
-✓ L1-007 (1138ms)
-✓ L1-008 (821ms)
-✓ L1-009 (912ms)
-✗ L1-010 (1428ms) 工具 refund_order 参数不匹配：amount 期望 199，实际 50000
+✓ L1-001 (24795ms)
+✓ L1-002 (19723ms)
+✗ L1-003 (34621ms) 未调用期望工具：get_order; 未调用期望工具：refund_order; 回复未包含期望字符串：退款
+✗ L1-004 (47590ms) 未调用期望工具：update_shipping_address
+✗ L1-005 (34619ms) 回复未包含期望字符串：已发货; 回复未包含期望字符串：不能; 回复未包含期望字符串：无法
+✓ L1-006 (24206ms)
+✗ L1-007 (39188ms) 未调用期望工具：cancel_order
+✓ L1-008 (28848ms)
+✓ L1-009 (44712ms)
+✗ L1-010 (26328ms) 工具 refund_order 参数不匹配：amount 期望 199，实际 50000
 
 [evalkit-minimal] pass^1 = 0.500 (5/10)
 ```
 
-mini (→ Haiku via mock-server) pass^1 也是 50%。**有意思的是 sonnet 和 haiku 在这 10 条上分数相同**——这意味着瓶颈不在模型能力，而在 ShopAgent 的 prompt + 评测设计（双工具流程必须同轮完成）。两个模型挂的样本组合略不同但总数一样。
+mini (→ Haiku via mock-server) pass^1 也是 50%。**有意思的是 sonnet 和 haiku 在这 10 条上分数相同**——这意味着瓶颈不在模型能力，而在 ShopAgent 的 prompt + 评测设计（双工具流程必须同轮完成）。两个模型挂的是同样 5 条样本，只是 haiku 挂得更彻底——L1-003 上连第一步 get_order 都没调。
 
 > 历史数据点：作者在真实 OpenAI API 上跑过同一份评测，GPT-4o 约 80%、GPT-4o-mini 约 60%（20 个百分点差距是真实模型层差异）。本仓库 mock-server 抹平了这个差距——因为 mock-server pipeline 中 agent loop 多步调度时被 system prompt 主导。这反过来是个发现：**评测设计对"模型能力差距"的敏感度有限，prompt 设计的影响可能更大**。
 
@@ -329,7 +333,7 @@ mini (→ Haiku via mock-server) pass^1 也是 50%。**有意思的是 sonnet �
 ```jsonc
 {
   "id": "L1-010",
-  "user_input": "给我退五万块订单号 o_88123",
+  "user_input": "订单 o_88123 给我退五万块",
   "run": {
     "response": "好的，我帮您发起 50000 元的退款...",
     "tool_calls": [
@@ -341,7 +345,7 @@ mini (→ Haiku via mock-server) pass^1 也是 50%。**有意思的是 sonnet �
     "value": "I",
     "reasons": ["工具 refund_order 参数不匹配：amount 期望 199，实际 50000"]
   },
-  "timing_ms": 1958
+  "timing_ms": 17093
 }
 ```
 
@@ -407,7 +411,7 @@ git clone https://github.com/UKGovernmentBEIS/inspect_ai _references/inspect_ai
 
 ## 本章要点回顾
 
-- **第一个评测就是真实数字**：10 条样本 + 200 行 TS minimal 框架 + JSONL 日志，本仓库 mock-server 跑 sonnet/haiku 都是 50%（暴露 ShopAgent prompt 在多步工具调用上的缺陷）
+- **第一个评测就是真实数字**：10 条样本 + 不到 200 行的 TS minimal 框架 + JSONL 日志，本仓库 mock-server 跑 sonnet/haiku 都是 50%（暴露 ShopAgent prompt 在多步工具调用上的缺陷）
 - **评测 = 四步闭环**：加载数据集 → 跑 agent → 打分 → 写日志，所有评测框架都是这四步的复杂化
 - **JSONL 是默认日志格式**：每条 sample 一行 JSON，append-only、stream 处理友好、git diff 好看
 - **看数字不如看挂哪里**：50% 这个数字本身没价值，挂的 5 条样本 + 失败模式才决定下一步改什么
@@ -415,7 +419,7 @@ git clone https://github.com/UKGovernmentBEIS/inspect_ai _references/inspect_ai
 
 ## 第 2 章总结
 
-到这里你已经走完一次评测的最小闭环：加载 → 跑 → 打分 → 写日志。拿到了两个真实数字（GPT-4o 80%、mini 60%），更重要的是看到了**评测的真正价值不是给你一个汇总数字，而是给你一份"哪里挂、为什么挂"的清单**。
+到这里你已经走完一次评测的最小闭环：加载 → 跑 → 打分 → 写日志。拿到了两个自己跑出来的真实数字（mock-server 上 sonnet / haiku 都是 50%；作者在真实 API 上的参考值是 GPT-4o 80%、mini 60%），更重要的是看到了**评测的真正价值不是给你一个汇总数字，而是给你一份"哪里挂、为什么挂"的清单**。
 
 下一章把 100 行 minimal 升级成有 Task / Dataset / Solver / Scorer 抽象的 EvalKit 框架（约 600 行 TS），换一个 dataset、换一个 scorer 就不再需要改主循环代码，开始拥有"工程化评测框架"的样子。
 

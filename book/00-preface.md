@@ -1,7 +1,7 @@
 ---
 title: 前言
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/OMAzw6qrPiQynXkF035cxzv5nph"
-last_synced: "2026-06-01T04:40:09Z"
+last_synced: "2026-07-05T08:02:54Z"
 ---
 
 ## 为什么写这本书
@@ -33,7 +33,7 @@ last_synced: "2026-06-01T04:40:09Z"
 - **想要"现成 prompt 模板速查手册"的人**——本书强调方法论 + 工程实战，不是 cookbook
 - **拒绝 TypeScript 的纯 Python 用户**——类比能跨语言，但代码读起来会吃力
 
-**如果你还没搭过真正的 agent**：这本书的"前置门槛"不高，但如果你只用过 ChatGPT 没真的 import openai 写过代码，建议先花一两个晚上跑一下仓库的 ShopAgent (`cd examples/shopagent && npm run dev`)，发几条用户消息，看 agent 怎么调工具、返回什么——感性认识"被评测的对象"长什么样后，再开始读评测体系，节奏会顺很多。配套的 `examples/00-prereq/` 提供了 ShopAgent 的 30 分钟快速试驾脚本。
+**如果你还没搭过真正的 agent**：这本书的"前置门槛"不高，但如果你只用过 ChatGPT 没真的 import openai 写过代码，建议先花一两个晚上跑一下仓库的 ShopAgent (`cd examples/shopagent && npm run dev`)，发几条用户消息，看 agent 怎么调工具、返回什么——感性认识"被评测的对象"长什么样后，再开始读评测体系，节奏会顺很多。ShopAgent 的工具清单和具体跑法见 `examples/shopagent/README.md`。
 
 ## 这本书覆盖什么 / 不覆盖什么
 
@@ -93,7 +93,7 @@ last_synced: "2026-06-01T04:40:09Z"
 
 ## 致谢
 
-感谢英国 AISI 团队开源 [inspect_ai](https://github.com/UKGovernmentBEIS/inspect_ai)，让评测框架有了行业事实标准的参照。感谢 [Sierra Research](https://sierra.ai) 团队的 [τ-bench](https://github.com/sierra-research/tau-bench) / [τ²-bench](https://github.com/sierra-research/tau2-bench) / τ³-bench 三代多轮工具调用基准，让 agent eval 范式有了可借鉴的基线。感谢 Hamel Husain 和 Shreya Shankar 公开他们在 [AI Evals 课程](https://www.aievals.com)中的方法论框架——Three Gulfs（评测中的三种鸿沟：理解 / 度量 / 改进）、Open-Axial Coding（开放-轴向编码，把 agent 错误样本归纳成主题树的定性研究方法）、LLM-as-Judge 7 步法、[judgy](https://github.com/ai-evals-course/judgy) 统计校正库——这本书在方法论层面对他们的工作有大量致敬引用，每一处都注明出处。
+感谢英国 AISI 团队开源 [inspect_ai](https://github.com/UKGovernmentBEIS/inspect_ai)，让评测框架有了行业事实标准的参照。感谢 [Sierra Research](https://sierra.ai) 团队的 [τ-bench](https://github.com/sierra-research/tau-bench) / [τ²-bench](https://github.com/sierra-research/tau2-bench) 两代多轮工具调用基准，让 agent eval 范式有了可借鉴的基线。感谢 Hamel Husain 和 Shreya Shankar 公开他们在 [AI Evals 课程](https://www.aievals.com)中的方法论框架——Three Gulfs（评测中的三种鸿沟：理解 / 度量 / 改进）、Open-Axial Coding（开放-轴向编码，把 agent 错误样本归纳成主题树的定性研究方法）、LLM-as-Judge 7 步法、[judgy](https://github.com/ai-evals-course/judgy) 统计校正库——这本书在方法论层面对他们的工作有大量致敬引用，每一处都注明出处。
 
 感谢和我聊过 agent 评测、踩过同样坑的所有同行。如果这本书帮你少踩几个坑，就值了。
 

@@ -1,12 +1,12 @@
 ---
 title: 附录 E　业务知识补充阅读
 feishu_url: "https://fivwvysqdz.feishu.cn/wiki/K3S4wWgOJi4XJKkQnGIci7kUn1f"
-last_synced: "2026-05-27T14:59:41Z"
+last_synced: "2026-07-05T08:02:54Z"
 ---
 
 ## 附录定位
 
-CLAUDE.md 铁律 7 明确"业务知识不进主线"——主线章节里不展开讲中国电商业务深水区。但 ShopAgent 的 policy 设计和 L3 对抗集需要这些业务知识作依据。**这个附录是这些业务知识的归宿**。
+本书主线只讲评测方法论，不展开中国电商业务深水区——读者来学评测，不该被迫先变成电商专家。但 ShopAgent 的 policy 设计和 L3 对抗集背后确实需要这些业务知识作依据，**这个附录就是它们的归宿**。
 
 主线读者可以完全跳过这个附录。深挖业务背景的读者可以翻翻。
 

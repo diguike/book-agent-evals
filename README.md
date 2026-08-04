@@ -113,6 +113,8 @@ OPENAI_BASE_URL=http://localhost:3030/v1 OPENAI_API_KEY=mock npm run eval
 
 详见 [`examples/mock-llm-server/README.md`](examples/mock-llm-server/README.md)。
 
+要跑真实评测数字，把 `OPENAI_BASE_URL` 指向任一 OpenAI 兼容端点即可，国内可用[阿里云百炼](https://www.aliyun.com/benefit/ai/aistar?userCode=okjhlpr5)。全量回归很烧 token，建议排到夜里跑——[百炼的 Credits 抵扣计划](https://www.aliyun.com/benefit/client/cross?userCode=okjhlpr5)在 22:00–08:00 时段有折扣。
+
 ## 关于作者
 
 [diguike](https://github.com/diguike) — Agent 工程师，全栈工程师出身，做 Agent 自进化、长程 Agent、AI 资产建设与团队 AI 体系搭建。AI Agent 工程系列作者，相关书籍：
